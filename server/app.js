@@ -12,6 +12,7 @@ app.use(express.urlencoded({extended: true}))
 
 app.post('/register', UserController.register)
 app.post('/login', UserController.login)
+app.patch('/user/:id', UserController.updateAvatar)
 
 server.listen(PORT, () => {
     console.log(`this app is listening to http://localhost:${PORT}`)

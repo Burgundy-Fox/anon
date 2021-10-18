@@ -7,6 +7,7 @@ List of available endpoints:
 
 -   `POST /register`
 -   `POST /login`
+-   `PATCH /user/:id`
 
 ### POST /register
 
@@ -111,6 +112,54 @@ Response:
     "errors": "Validation Error"
 }
 ```
+
+### PATCH /user/:id
+
+Request:
+
+-   data:
+
+```json
+{
+    "avatar": "https://avatars.dicebear.com/api/bottts/anon-123.svg"
+}
+
+```
+
+Response:
+
+-   status: 200
+-   body:
+
+```json
+{
+    "id": 2,
+    "username": "masteradmin",
+    "email": "masteradmin@mail.com",
+    "avatar": "https://avatars.dicebear.com/api/bottts/anon-123.svg"
+}
+```
+
+-   status: 500
+-   body:
+    ​
+
+```json
+{
+    "errors": "Internal Server Error"
+}
+```
+
+-   status: 400
+-   body:
+    ​
+
+```json
+{
+    "errors": "Validation Error"
+}
+```
+
 
 ## Hiss
 

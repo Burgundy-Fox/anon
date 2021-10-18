@@ -21,9 +21,7 @@ class UserController {
                 avatar: user.avatar,
             })
         } catch (error) {
-            res.status(500).json({
-                error
-            })
+            res.status(500).json(error)
         }
     }
 
@@ -52,10 +50,33 @@ class UserController {
                 access_token: access_token,
             })
         } catch (error) {
-            res.status(500).json({
-                error,
-            })
+            res.status(500).json(error)
         }
+    }
+
+    static async updateAvatar (req, res) {
+        const id = +req.params.id
+        const avatar = req.body.avatar
+        
+        try {
+            const user = await User.update({ avatar }, {
+                where: {
+                    id: id
+                }, 
+                returning: true
+            })
+    
+            res.status(200).json({
+                id: user[1][0].id,
+                username: user[1][0].username,
+                email: user[1][0].email,
+                avatar: user[1][0].avatar
+            })
+            
+        } catch (error) {
+            res.status(500).json(error)
+        }
+
     }
 }
 
