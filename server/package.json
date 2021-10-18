@@ -10,11 +10,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "google-auth-library": "^7.10.1",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.1",
-    "sequelize": "^6.7.0"
+    "save": "^2.4.0",
+    "sequelize": "^6.7.0",
+    "socket.io": "^4.3.1"
   }
 }

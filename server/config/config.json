@@ -2,22 +2,18 @@
   "development": {
     "username": "postgres",
     "password": "1234567890",
-    "database": "anon",
+    "database": "anon_social_app",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "username": "postgres",
+    "password": "1234567890",
+    "database": "anon_social_app_test",
+    "host": "localhost",
+    "dialect": "postgres"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "use_env_variable": "DATABASE_URL"
   }
 }

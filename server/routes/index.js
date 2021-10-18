@@ -1,7 +1,9 @@
 const router = require("express").Router();
 
-const postRoutes = require("./post");
+const { authentification } = require("../middlewares/auth");
+const hissRoutes = require("./hiss");
 
-router.use("/posts", postRoutes);
+router.use(authentification);
+router.use("/hisses", hissRoutes);
 
 module.exports = router;
