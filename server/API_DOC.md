@@ -29,8 +29,8 @@ Response:
 
 ```json
 {
-    "username": "blablabla",
     "id": 8,
+    "username": "blablabla",
     "email": "tombradyisold@mail.com",
     "avatar": "https://avatars.dicebear.com/api/bottts/anon-168.svg"
 }
