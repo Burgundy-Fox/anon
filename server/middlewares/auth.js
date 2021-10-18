@@ -5,7 +5,7 @@ function authentification(req, res, next) {
   const { access_token } = req.headers;
 
   if (!access_token) {
-    return res.status(400).json("Access token missing");
+    return res.status(401).json("Access token missing");
   }
 
   try {
@@ -16,7 +16,7 @@ function authentification(req, res, next) {
     User.findByPk(userDecoded.id)
       .then((user) => {
         if (!user) {
-          return res.status(404), json("Unauthenticated");
+          return res.status(401), json("Unauthenticated");
         } else {
           req.currentUser = {
             id: user.id,
@@ -34,7 +34,7 @@ function authorization(req, res, next) {
   if (req.currentUser.id === +req.params.id) {
     next();
   } else {
-    return res.status(500).json("Unauthorized");
+    return res.status(401).json("Unauthorized");
   }
 }
 

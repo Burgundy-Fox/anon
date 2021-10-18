@@ -47,7 +47,7 @@ class HissController {
 
           return res.status(200).json(resultUpdateLikeHiss);
         } else {
-          return res.status(500).json(error);
+          throw "id not found!";
         }
       })
       .catch((error) => res.status(500).json({ error }));
@@ -71,10 +71,10 @@ class HissController {
 
           return res.status(200).json(resultUpdateHiss);
         } else {
-          return res.status(500).json(error);
+          throw "id not found!";
         }
       })
-      .catch((error) => res.status(500).json(error));
+      .catch((error) => res.status(500).json({ error }));
   }
 
   static deleteHiss(req, res) {
