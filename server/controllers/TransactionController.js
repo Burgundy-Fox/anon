@@ -8,7 +8,7 @@ let snap = new midtransClient.Snap({
 });
 
 class Controller {
-    static createPaymentToken(req, res, next){
+    static midtransToken(req, res, next){
 
         let parameter = {
             "transaction_details": {

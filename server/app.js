@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const server = require("http").createServer(app);
 const PORT = 4000
+const router = require('./routes/index')
 const cors = require('cors')
 const UserController = require('./controllers/UserController')
 const io = require("socket.io")(server, {
@@ -18,6 +19,8 @@ app.use(express.urlencoded({extended: true}))
 app.post('/register', UserController.register)
 app.post('/login', UserController.login)
 app.patch('/user/:id', UserController.updateAvatar)
+app.use(router)
+
 
 io.on("connection", socket => {
     console.log(socket.id);

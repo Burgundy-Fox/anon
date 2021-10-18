@@ -313,20 +313,238 @@ Response:
 }
 ```
 
-## Payment
-
-
 List of available endpoints:
 ​
 
--   `POST /create-payment-token`
--   `POST /create-transaction`
--   `GET /show-all-transaction`
--   `PATCH /update-status`
+-   `POST /transaction/midtransToken`
+-   `POST /transaction`
+-   `GET /transaction`
+-   `PATCH /transaction/:transactionId`
 
-####
-required: 
+## Transactions
 
-Headers: {
-    access_token
-}
+### Create Transaction
+
+Membuat token pembayaran midtrans 
+
+-   **URL**
+
+    `/transaction/midtransToken`
+
+-   **Method:**
+
+    `post`
+
+-   **Headers:**
+
+    ```json
+    {
+    	"access_token": "access token"
+    }
+    ```
+-   **Body:**
+
+    ```json
+    {
+    	"order_Id": "<orderid midtrans>",
+    	"price": "number"
+    }
+    ```
+
+-   **Success Response:**
+
+    -   **Code:** 200 <br />
+        **Content:**
+
+        ```json
+        {
+            "token": "eabb7088-72c3-43e3-af7d-5e3ad3996c07",
+            "redirect_url": "https://app.sandbox.midtrans.com/snap/v2/vtweb/eabb7088-72c3-43e3-af7d-5e3ad3996c07"
+        }
+        ```
+
+-   **Error Response:**
+    -   **Code:** 401 <br />
+        ```json
+        {
+        	"errors": ["Missing JWT"]
+        	// or JWT Invalid
+        }
+        ```
+    -   **Code:** 500 INTERNAL SERVER ERROR <br />
+
+---
+
+### Create Transaction
+
+Menambahkan data transaksi di database 
+
+-   **URL**
+
+    `/transaction`
+
+-   **Method:**
+
+    `post`
+
+-   **Headers:**
+
+    ```json
+    {
+    	"access_token": "access token"
+    }
+    ```
+-   **Body:**
+
+    ```json
+    {
+    	"order_id": "<orderid midtrans>",
+    	"transaction_status": "<status transaction>",
+    }
+    ```
+
+-   **Success Response:**
+
+    -   **Code:** 201 <br />
+        **Content:**
+
+        ```json
+        {
+            "id": 13,
+            "order_id": "<orderid midtrans>",
+            "status": "pending",
+            "userId": 1,
+            "recipeId": 1,
+            "updatedAt": "2021-09-10T07:01:47.870Z",
+            "createdAt": "2021-09-10T07:01:47.870Z"
+        }
+        ```
+
+-   **Error Response:**
+    -   **Code:** 401 <br />
+        ```json
+        {
+        	"errors": ["Missing JWT"]
+        	// or JWT Invalid
+        }
+        ```
+    -   **Code:** 500 INTERNAL SERVER ERROR <br />
+
+---
+
+### View Transaction
+
+Menampilakan data transaction user
+
+-   **URL**
+
+    `/transaction`
+
+-   **Method:**
+
+    `get`
+
+-   **Headers:**
+
+    ```json
+    {
+    	"access_token": "access token"
+    }
+    ```
+
+-   **Success Response:**
+
+    -   **Code:** 200 <br />
+        **Content:**
+
+        ```json
+        [
+            {
+                "id": 13,
+                "order_id": "<orderid midtrans>",
+                "status": "pending",
+                "UserId": 1,
+                "price": 1,
+                "createdAt": "2021-09-10T07:01:47.870Z",
+                "updatedAt": "2021-09-10T07:01:47.870Z",
+            }
+        ]
+        ```
+
+-   **Error Response:**
+    -   **Code:** 401 <br />
+        ```json
+        {
+        	"errors": ["Missing JWT"]
+        	// or JWT Invalid
+        }
+        ```
+    -   **Code:** 500 INTERNAL SERVER ERROR <br />
+
+---
+
+
+### Update status transaction
+
+Mengupdate status transaction
+
+-   **URL**
+
+    `/transactions/:transactionId`
+
+-   **Method:**
+
+    `patch`
+-   **Url Params:** `transactionId=number`
+
+-   **Headers:**
+
+    ```json
+    {
+    	"access_token": "access token"
+    }
+    ```
+
+-   **Success Response:**
+
+    -   **Code:** 200 <br />
+        **Content:**
+
+        ```json
+        {
+            "message" : "Transaction succesfully updated" 
+        }
+        ```
+    -   **Code:** 202 <br />
+        **Content:**
+
+        ```json
+        {
+            "message" : "Transaction isn't payed yet" 
+        }
+        ```
+
+-   **Error Response:**
+    -   **Code:** 404 <br />
+        ```json
+        {
+            "errors": ["Transaction Not Found"]
+        }
+        ```
+    -   **Code:** 403 <br />
+        ```json
+        {
+            "errors": ["Access invalid"]
+        }
+        ```
+    -   **Code:** 401 <br />
+
+        ```json
+        {
+        	"errors": ["Missing JWT"]
+        	// or JWT Invalid
+        }
+        ```
+    -   **Code:** 500 INTERNAL SERVER ERROR <br />
+
+---
