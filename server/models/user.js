@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         isEmail: true,
       }
     },
-    
+
     username: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -48,6 +48,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate: {
         isUrl: true
+      }
+    },
+    wallet: {
+      type: DataTypes.INTEGER,
+      validate: {
+        min: 0
       }
     }
   }, {
