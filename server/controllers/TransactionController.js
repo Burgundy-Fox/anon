@@ -9,13 +9,12 @@ let snap = new midtransClient.Snap({
 
 class Controller {
     static midtransToken(req, res, next) {
-
-        let order_id = "TOP" + req.body.price + "TOPBUGAnonUser" + req.currentUser.id
+        let order_id = "TOP" + +req.body.price +  "TOPBUG" + new Date().toISOString() + "AnonUser"  + req.currentUser.id
 
         let parameter = {
             "transaction_details": {
                 "order_id": order_id,
-                "gross_amount": req.body.price
+                "gross_amount": +req.body.price
             }, "credit_card": {
                 "secure": true
             }
@@ -27,32 +26,32 @@ class Controller {
                 res.status(200).json({ transaction });
             })
             .catch(err => {
-                console.log(err);
+                res.status(500).json(err)
             })
     }
 
     static createTransaction(req, res, next) {
-        // ex order_id TOP5000TOPBUGAnonUser1
+        // ex order_id TOP5000TOPBUG1995-12-16T20:24:00.000ZAnonUser1
+        let UserId = +req.body.order_id.split('AnonUser')[1]
+
         Transaction.findAll({
             where: {
                 order_id: req.body.order_id,
             },
         })
             .then((result) => {
-                let UserId = +req.body.order_id.split('TOPBUG')[1].substring(8)
-
-                if (!result) {
+                if (!result.length) {
                     let input = {
                         order_id: req.body.order_id,
                         status: req.body.transaction_status,
-                        price: req.body.gross_amount,
+                        price: Number(req.body.gross_amount),
                         UserId,
                     }
                     Transaction.create(input)
                         .then((result) => {
                             res.status(201).json(result)
                         }).catch((err) => {
-                            next(err)
+                            throw err
                         });
                 } else {
                     let input = {
@@ -67,13 +66,13 @@ class Controller {
                             if (result[0]) res.status(200).json({
                                 message: 'Transaction succesfully updated'
                             });
-                            else next({ name: "Transaction Not Found" });
+                            else throw ({ name: "Transaction Not Found" });
                         }).catch((err) => {
                             throw err
                         });
                 }
             }).catch((err) => {
-                next(err)
+                res.status(500).json(err)
             });
     }
 
@@ -87,38 +86,9 @@ class Controller {
             .then((result) => {
                 res.status(200).json(result)
             }).catch((err) => {
-                next(err)
+                res.status(500).json(err)
             });
     }
-
-    // static updateTransactions(req, res, next){
-    //     snap.transaction.status(req.transactionData.order_id)
-    //     .then((response)=>{
-    //         if(response.transaction_status !== 'pending'){
-    //             let input = {
-    //                 status : 'settlement'
-    //             }
-    //             Transaction.update(input, {
-    //                 where : {
-    //                     id : req.params.transactionId
-    //                 }
-    //             })
-    //             .then((result) => {
-    //                 if (result[0]) res.status(200).json({
-    //                     message : 'Transaction succesfully updated'
-    //                 });
-    //                 else next({ name: "Transaction Not Found" });
-    //             }).catch((err) => {
-    //                 next(err)
-    //             });
-    //         }else{
-    //             res.status(202).json({
-    //                 message : "Transaction isn't payed yet"
-    //             })
-    //         }
-    //     })
-    //     .catch(err => next(err))
-    // }
 }
 
 module.exports = Controller

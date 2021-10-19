@@ -1,10 +1,12 @@
 const router = require("express").Router();
-
+const { authentication } = require("../middlewares/auth");
 const TransactionController = require("../controllers/TransactionController");
 
-router.post('/midtransToken', TransactionController.midtransToken)
+// ini buat midtrans ke server kita
 router.post('/', TransactionController.createTransaction)
+
+router.use(authentication)
+router.post('/midtransToken', TransactionController.midtransToken)
 router.get('/', TransactionController.viewTransactions)
-// router.patch('/:transactionId', authorization, TransactionController.updateTransactions)
 
 module.exports = router;
