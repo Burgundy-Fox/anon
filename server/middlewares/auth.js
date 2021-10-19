@@ -1,7 +1,7 @@
 const { tokenDecoder } = require("../helpers");
 const { User } = require("../models");
 
-function authentification(req, res, next) {
+function authentication(req, res, next) {
   const { access_token } = req.headers;
 
   if (!access_token) {
@@ -39,6 +39,6 @@ function authorization(req, res, next) {
 }
 
 module.exports = {
-  authentification,
+  authentication,
   authorization,
 };

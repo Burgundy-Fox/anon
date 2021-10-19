@@ -1,8 +1,9 @@
 const router = require("express").Router();
 
 const hissControllers = require("../controllers/hiss");
-const { authorization } = require("../middlewares/auth");
+const { authorization, authentication } = require("../middlewares/auth");
 
+router.use(authentication)
 router.post("/", hissControllers.createHiss);
 router.get("/", hissControllers.getAllHiss);
 router.get("/:id", authorization, hissControllers.getHissById);
