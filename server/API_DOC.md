@@ -5,11 +5,12 @@
 List of available endpoints:
 ​
 
--   `POST /register`
--   `POST /login`
+-   `POST /user/register`
+-   `POST /user/login`
 -   `PATCH /user/:id`
+-   `PATCH /user/buy-item/:id` 
 
-### POST /register
+### POST /user/register
 
 Request:
 
@@ -57,7 +58,7 @@ Response:
 }
 ```
 
-### POST /login
+### POST /user/login
 
 Request:
 
@@ -160,6 +161,55 @@ Response:
 }
 ```
 
+
+
+
+### PATCH /user/buy-item/:id
+
+Request:
+
+-   data:
+
+```json
+{
+    "price": "integer"
+}
+
+```
+
+Response:
+
+-   status: 200
+-   body:
+
+```json
+{
+    "id": 2,
+    "username": "masteradmin",
+    "email": "masteradmin@mail.com",
+    "wallet": 10000
+}
+```
+
+-   status: 500
+-   body:
+    ​
+
+```json
+{
+    "errors": "Internal Server Error"
+}
+```
+
+-   status: 400
+-   body:
+    ​
+
+```json
+{
+    "errors": "Validation Error"
+}
+```
 
 ## Hiss
 

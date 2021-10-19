@@ -6,8 +6,8 @@ router.post('/register', UserController.register)
 router.post('/login', UserController.login)
 
 router.use(authentication)
-router.patch('/user/:id', UserController.updateAvatar)
-router.patch('/user/add-wallet/:id', UserController.addWallet)
-router.patch('/user/buy-item/:id', UserController.buyItem)
+router.patch('/:id', UserController.updateAvatar)
+// router.patch('/add-wallet/:id', UserController.addWallet)
+router.patch('/buy-item/:id', UserController.buyItem)
 
 module.exports= router

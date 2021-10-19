@@ -1,5 +1,6 @@
-const { Transaction } = require('../models')
+const { Transaction, User } = require('../models')
 const midtransClient = require('midtrans-client');
+const UserController = require('./UserController')
 
 let snap = new midtransClient.Snap({
     isProduction: false,
@@ -30,7 +31,7 @@ class Controller {
             })
     }
 
-    static createTransaction(req, res, next) {
+    static async createTransaction(req, res, next) {
         // ex order_id TOP5000TOPBUG1995-12-16T20:24:00.000ZAnonUser1
         let UserId = +req.body.order_id.split('AnonUser')[1]
 
@@ -63,9 +64,33 @@ class Controller {
                         }
                     })
                         .then((result) => {
-                            if (result[0]) res.status(200).json({
-                                message: 'Transaction succesfully updated'
-                            });
+                            if (result[0]) {
+
+                                const id = UserId
+                                const wallet = Number(req.body.gross_amount)
+
+                                User.increment('wallet', { 
+                                    by: wallet,
+                                    where: {
+                                        id
+                                    }
+                                })
+                                .then(() => {
+                                    res.status(200).json({
+                                        message: 'Transaction succesfully updated'
+                                    });
+                                    // res.status(200).json({
+                                    //     id: user[0][0][0].id,
+                                    //     username: user[0][0][0].username,
+                                    //     email: user[0][0][0].email,
+                                    //     wallet: user[0][0][0].wallet
+                                    // })
+                                }).catch((err) => {
+                                    res.status(500).json(err)
+                                });
+
+                            }
+                            
                             else throw ({ name: "Transaction Not Found" });
                         }).catch((err) => {
                             throw err
