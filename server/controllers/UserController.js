@@ -65,7 +65,8 @@ class UserController {
                 }, 
                 returning: true
             })
-    
+
+            if (user[0] === 0) throw { error: 'user not found!' }
             res.status(200).json({
                 id: user[1][0].id,
                 username: user[1][0].username,
