@@ -323,7 +323,7 @@ List of available endpoints:
 
 ## Transactions
 
-### Create Transaction
+### Request Midtrans Token
 
 Membuat token pembayaran midtrans 
 
@@ -346,7 +346,6 @@ Membuat token pembayaran midtrans
 
     ```json
     {
-    	"order_Id": "<orderid midtrans>",
     	"price": "number"
     }
     ```
@@ -490,7 +489,7 @@ Mengupdate status transaction
 
 -   **URL**
 
-    `/transactions/:transactionId`
+    `/transaction/:transactionId`
 
 -   **Method:**
 

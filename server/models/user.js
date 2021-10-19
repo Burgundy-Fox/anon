@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       // User.hasMany(models.Hiss, {foreignKey: 'UserId'})
-      User.hasMany(models.Transactions, {foreignKey : 'UserId'})
+      User.hasMany(models.Transaction, {foreignKey : 'UserId'})
     }
   };
   User.init({
