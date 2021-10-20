@@ -2,7 +2,7 @@ import * as firebase from 'firebase'
 import 'firebase/auth'
 import 'firebase/firestore'
 
-const firebaseConfig = {
+let firebaseConfig = {
     apiKey: "AIzaSyDeY3kco62ikakUtxmiDvXgkGx0_FkyC-Q",
     authDomain: "anon-social-mobile-app.firebaseapp.com",
     projectId: "anon-social-mobile-app",

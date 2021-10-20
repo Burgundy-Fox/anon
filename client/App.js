@@ -1,11 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { StyleSheet, Text, View, TextInput } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import LoginPage from './screens/LoginPage'
+import RegisterPage from './screens/RegisterPage'
+import ChatPage from './screens/ChatPage'
+const Stack = createNativeStackNavigator()
 
 export default function App() {
-    
     return (
-        <View style={styles.container}>
-        </View>
+        <NavigationContainer>
+            <Stack.Navigator>
+                <Stack.Screen name="Login" component={LoginPage} />
+                <Stack.Screen name="Register" component={RegisterPage} />
+                <Stack.Screen name="Chat" component={ChatPage} />
+            </Stack.Navigator>
+        </NavigationContainer>
     )
 }
 
