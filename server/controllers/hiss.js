@@ -17,7 +17,7 @@ class HissController {
 
   static getAllHiss(req, res) {
     Hiss.findAll({
-      order: [["id", "ASC"]],
+      order: [["createdAt", "DESC"]],
     })
       .then((hisses) => res.status(200).json(hisses))
       .catch((error) => res.status(500).json(error));
