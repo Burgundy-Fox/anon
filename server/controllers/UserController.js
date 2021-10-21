@@ -13,12 +13,14 @@ class UserController {
                 email,
                 password,
                 avatar: `https://avatars.dicebear.com/api/bottts/anon-${random}.svg`,
+                wallet: 0
             })
             res.status(201).json({
                 id: user.id,
                 username: user.username,
                 email: user.email,
                 avatar: user.avatar,
+                wallet: user.wallet
             })
         } catch (error) {
             res.status(500).json(error)
@@ -47,6 +49,7 @@ class UserController {
                 username: user.username,
                 email: user.email,
                 avatar: user.avatar,
+                wallet: user.wallet,
                 access_token: access_token,
             })
         } catch (error) {
@@ -71,13 +74,59 @@ class UserController {
                 id: user[1][0].id,
                 username: user[1][0].username,
                 email: user[1][0].email,
-                avatar: user[1][0].avatar
+                avatar: user[1][0].avatar,
+                wallet: user[1][0].wallet
             })
             
         } catch (error) {
             res.status(500).json(error)
         }
+    }
 
+    // static async addWallet(req, res) {
+    //     const id = +req.params.id
+    //     const wallet = +req.body.wallet
+     
+    //     try {
+    //         const user = await User.increment('wallet', { 
+    //             by: wallet,
+    //             where: {
+    //                 id
+    //             }
+    //         })
+    //         res.status(200).json({
+    //             id: user[0][0][0].id,
+    //             username: user[0][0][0].username,
+    //             email: user[0][0][0].email,
+    //             wallet: user[0][0][0].wallet
+    //         })
+    //     } catch (error) {
+    //         res.status(500).json(error)
+    //     }
+    // }
+
+   
+    static async buyItem(req, res) {
+        const id =  +req.params.id
+        const price = +req.body.price
+
+        try {
+            const user = await User.decrement('wallet', { 
+                by: price,
+                where: {
+                    id
+                }
+            })
+            if (user[0][1] === 0) throw { error: 'user not found!' }
+            res.status(200).json({
+                id: user[0][0][0].id,
+                username: user[0][0][0].username,
+                email: user[0][0][0].email,
+                wallet: user[0][0][0].wallet
+            })
+        } catch (error) {
+            res.status(500).json(error)
+        }
     }
 }
 

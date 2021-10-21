@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       // User.hasMany(models.Hiss, {foreignKey: 'UserId'})
+      User.hasMany(models.Transaction, {foreignKey : 'UserId'})
     }
   };
   User.init({
@@ -26,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         isEmail: true,
       }
     },
-    
+
     username: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -48,6 +49,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate: {
         isUrl: true
+      }
+    },
+    wallet: {
+      type: DataTypes.INTEGER,
+      validate: {
+        min: 0
       }
     }
   }, {
