@@ -2,10 +2,10 @@ const { Hiss } = require("../models");
 
 class HissController {
   static createHiss(req, res) {
-    console.log(req);
+    // console.log(req.file);
     const input = {
       content: req.body.content,
-      image_url: req.body.image_url,
+      image_url: req.image_url || null,
       like: 0,
       UserId: +req.currentUser.id,
     };
@@ -17,7 +17,7 @@ class HissController {
 
   static getAllHiss(req, res) {
     Hiss.findAll({
-      order: [["id", "ASC"]],
+      order: [["createdAt", "DESC"]],
     })
       .then((hisses) => res.status(200).json(hisses))
       .catch((error) => res.status(500).json(error));
