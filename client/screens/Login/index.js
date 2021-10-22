@@ -1,23 +1,63 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Button,
   Image,
+  Alert,
 } from "react-native";
-
-import { SafeAreaView } from "react-native-safe-area-context";
+import { inputLogin } from "../../store/actions/user";
 
 export default function Login({ navigation }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [token, setToken] = useState("");
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem("@access_token");
+      //   console.log(value);
+      if (value !== null) {
+        // value previously stored
+        setToken(value);
+        navigation.replace("MainApp");
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
+
   function handleLogin() {
-    navigation.navigate("MainApp");
+    if (!username) {
+      Alert.alert("Please fill Username");
+    }
+
+    if (!password) {
+      Alert.alert("Please fill Password");
+    }
+
+    dispatch(inputLogin({ username, password })).then((value) => {
+      if (value) {
+        getData();
+      } else {
+        Alert.alert("Failed Login!");
+      }
+    });
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View
         style={{
           alignItems: "center",
@@ -33,17 +73,21 @@ export default function Login({ navigation }) {
       </View>
       <View style={styles.formCard}>
         <Text style={[styles.font, styles.spacing]}>Username</Text>
-        <TextInput style={[styles.textInput, styles.font, styles.spacing]} />
+        <TextInput
+          onChangeText={(input) => setUsername(input)}
+          style={[styles.textInput, styles.font, styles.spacing]}
+        />
 
         <Text style={[styles.font, styles.spacing]}>Password</Text>
         <TextInput
+          onChangeText={(input) => setPassword(input)}
           style={[styles.textInput, styles.font, styles.spacing]}
           secureTextEntry
         />
 
         <TouchableOpacity
           style={[styles.button, styles.spacing]}
-          onPress={handleLogin}
+          onPress={() => handleLogin()}
         >
           <Text style={{ fontSize: 18, fontWeight: "bold", color: "#fff" }}>
             Login
@@ -60,7 +104,7 @@ export default function Login({ navigation }) {
           </Text>
         </Text>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
