@@ -10,10 +10,9 @@ import { Avatar } from 'react-native-elements/dist/avatar/Avatar'
 import { GiftedChat } from 'react-native-gifted-chat'
 
 const ChatPage = ({ navigation, route }) => {
-    // console.log(auth.currentUser)
+
     const currentId = auth.currentUser.email
-    // console.log('ini params nya')
-    // console.log(route.params)
+
     useLayoutEffect(() => {
         return navigation.setOptions({
             headerRight: () => {

@@ -9,37 +9,13 @@ const LoginPage = ({ navigation }) => {
     const signIn = () => {
         auth.signInWithEmailAndPassword(email, password)
             .then((userCredential) => {
-                // Signed in
-                let user = userCredential.user
-                // ...
-                // console.log('ini isi user')
-                // console.log(user.email)
-                navigation.replace('ChatRoom', {
-                    user1: {
-                        _id: user.email
-                    }
-                })
-                // console.log(userCredential)
+                navigation.replace('ChatRoom')
             })
             .catch((error) => {
-                let errorCode = error.code
-                let errorMessage = error.message
                 alert(error)
             })
     }
-    // useEffect(() => {
-    //     const unsubscribe = auth.onAuthStateChanged((user) => {
-    //         if (user) {
-    //             //   navigation.replace('Chat')
-    //         } else {
-    //             // navigation.canGoBack() && navigation.popToTop()
-    //             // User is signed out
-    //             // ...
-    //         }
-    //     })
 
-    //     return unsubscribe
-    // }, [])
     return (
         <View>
             <View>

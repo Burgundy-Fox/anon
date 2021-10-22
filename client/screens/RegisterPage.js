@@ -18,16 +18,14 @@ const RegisterPage = ({navigation}) => {
                     photoURL: avatar? avatar : 'http://simpleicon.com/wp-content/uploads/user-4.png',
                 })
                     .then(() => {
-                        // Update successful
-                        // ...
+        
                     })
                     .catch((error) => {
-                        // An error occurred
-                        // ...
+            
                     })
-                    // navigation.popToTop()
+         
                     navigation.replace('Login')
-                // ...
+           
             })
             .catch((error) => {
                 var errorMessage = error.message
