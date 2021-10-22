@@ -2,13 +2,16 @@ import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
+import { auth } from '../../firebase/firebase'
 
 export default function MyAccount({ navigation }) {
   const handleLogOut = async () => {
     try {
       await AsyncStorage.clear();
+      await auth.signOut()
       navigation.replace("Login");
     } catch (e) {
+      console.log(e)
       // clear error
     }
 

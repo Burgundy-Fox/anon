@@ -20,6 +20,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SplashScreen from "../screens/Splash Screen";
+import Chat from "../screens/Chat";
 
 function MainApp({ navigation }) {
   const Tab = createBottomTabNavigator();
@@ -117,7 +118,7 @@ function MainApp({ navigation }) {
       <Tab.Screen
         name="Direct Message"
         component={DirectMessage}
-        options={{ headerShown: false, tabBarShowLabel: false }}
+        options={{ tabBarShowLabel: false }}
       />
     </Tab.Navigator>
   );
@@ -174,6 +175,10 @@ export default function Router() {
             </View>
           ),
         }}
+      />
+      <Stack.Screen 
+      name="Chat"
+      component={Chat}
       />
       <Stack.Screen
         name="Reply"

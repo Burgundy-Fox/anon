@@ -48,6 +48,7 @@ export default function Login({ navigation }) {
     }
 
     dispatch(inputLogin({ username, password })).then((value) => {
+      console.log(value)
       if (value) {
         getData();
       } else {
