@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useState, useCallback, useEffect } from 'react'
 import { View, Text } from 'react-native'
-import { auth, db } from '../firebase/firebase'
+import { auth, db } from '../../firebase/firebase'
 import { AntDesign } from '@expo/vector-icons'
 import {
     RotationGestureHandler,
@@ -9,7 +9,7 @@ import {
 import { Avatar } from 'react-native-elements/dist/avatar/Avatar'
 import { GiftedChat } from 'react-native-gifted-chat'
 
-const ChatPage = ({ navigation, route }) => {
+const Chat = ({ navigation, route }) => {
 
     const currentId = auth.currentUser.email
 
@@ -105,4 +105,4 @@ const ChatPage = ({ navigation, route }) => {
     )
 }
 
-export default ChatPage
+export default Chat
