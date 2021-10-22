@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { Input, Button } from 'react-native-elements'
-import { auth } from '../firebase'
+import { auth } from '../firebase/firebase'
 
 const RegisterPage = ({navigation}) => {
     const [email, setEmail] = useState('')
@@ -11,10 +11,11 @@ const RegisterPage = ({navigation}) => {
         auth.createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 // Signed in
+                console.log(avatar)
                 var user = userCredential.user
                 user.updateProfile({
                     email: email,
-                    avatar: avatar? avatar : 'https://example.com/jane-q-user/profile.jpg',
+                    photoURL: avatar? avatar : 'http://simpleicon.com/wp-content/uploads/user-4.png',
                 })
                     .then(() => {
                         // Update successful
@@ -24,7 +25,8 @@ const RegisterPage = ({navigation}) => {
                         // An error occurred
                         // ...
                     })
-                    navigation.popToTop()
+                    // navigation.popToTop()
+                    navigation.replace('Login')
                 // ...
             })
             .catch((error) => {

@@ -1,37 +1,45 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { Input, Button } from 'react-native-elements'
-import { auth } from '../firebase'
+import { auth } from '../firebase/firebase'
 
 const LoginPage = ({ navigation }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const signIn = () => {
         auth.signInWithEmailAndPassword(email, password)
-            // .then((userCredential) => {
-            //     // Signed in
-            //     var user = userCredential.user
-            //     // ...
-            // })
+            .then((userCredential) => {
+                // Signed in
+                let user = userCredential.user
+                // ...
+                // console.log('ini isi user')
+                // console.log(user.email)
+                navigation.replace('ChatRoom', {
+                    user1: {
+                        _id: user.email
+                    }
+                })
+                // console.log(userCredential)
+            })
             .catch((error) => {
-                var errorCode = error.code
-                var errorMessage = error.message
+                let errorCode = error.code
+                let errorMessage = error.message
                 alert(error)
             })
     }
-    useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((user) => {
-            if (user) {
-                  navigation.replace('Chat')
-            } else {
-                navigation.canGoBack() && navigation.popToTop()
-                // User is signed out
-                // ...
-            }
-        })
+    // useEffect(() => {
+    //     const unsubscribe = auth.onAuthStateChanged((user) => {
+    //         if (user) {
+    //             //   navigation.replace('Chat')
+    //         } else {
+    //             // navigation.canGoBack() && navigation.popToTop()
+    //             // User is signed out
+    //             // ...
+    //         }
+    //     })
 
-        return unsubscribe
-    }, [])
+    //     return unsubscribe
+    // }, [])
     return (
         <View>
             <View>
