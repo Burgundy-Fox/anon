@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "postgres",
-    "password": "postgres",
-    "database": "anon_social_app",
+    "password": "1234567890",
+    "database": "anon_social",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
