@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   View,
   Text,
@@ -6,16 +7,52 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  Alert,
 } from "react-native";
 
-import { SafeAreaView } from "react-native-safe-area-context";
+import { inputRegister } from "../../store/actions/user";
 
 export default function Register({ navigation }) {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.usersReducer.isRegister);
+
+  useEffect(() => {
+    if (user) {
+      navigation.navigate("Login");
+      setUsername("");
+      setEmail("");
+      setPassword("");
+    }
+
+    return () => {
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      dispatch(inputRegister({ username, email, password }));
+    };
+  }, [user]);
+
   function handleRegister() {
-    navigation.navigate("Login");
+    if (!username) {
+      Alert.alert("Please fill Username");
+    }
+    if (!email) {
+      Alert.alert("Please fill Email");
+    }
+    if (!password) {
+      Alert.alert("Please fill Password");
+    }
+
+    dispatch(inputRegister({ username, email, password }));
   }
+
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View
         style={{
           alignItems: "center",
@@ -35,29 +72,37 @@ export default function Register({ navigation }) {
           Register
         </Text>
       </View>
+
       <View style={styles.formCard}>
         <Text style={[styles.font, styles.spacing]}>Username</Text>
-        <TextInput style={[styles.textInput, styles.font, styles.spacing]} />
+        <TextInput
+          onChangeText={(text) => setUsername(text)}
+          style={[styles.textInput, styles.font, styles.spacing]}
+        />
 
         <Text style={[styles.font, styles.spacing]}>Email</Text>
-        <TextInput style={[styles.textInput, styles.font, styles.spacing]} />
+        <TextInput
+          onChangeText={(text) => setEmail(text)}
+          style={[styles.textInput, styles.font, styles.spacing]}
+        />
 
         <Text style={[styles.font, styles.spacing]}>Password</Text>
         <TextInput
+          onChangeText={(text) => setPassword(text)}
           style={[styles.textInput, styles.font, styles.spacing]}
           secureTextEntry
         />
 
         <TouchableOpacity
           style={[styles.button, styles.spacing]}
-          onPress={handleRegister}
+          onPress={() => handleRegister()}
         >
           <Text style={{ fontSize: 18, fontWeight: "bold", color: "#fff" }}>
             Register
           </Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 

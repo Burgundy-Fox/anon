@@ -1,11 +1,20 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function MyAccount({ navigation }) {
-  function handleLogOut() {
-    navigation.navigate("Login");
-  }
+  const handleLogOut = async () => {
+    try {
+      await AsyncStorage.clear();
+      navigation.replace("Login");
+    } catch (e) {
+      // clear error
+    }
+
+    // console.log("Done.");
+  };
+
   return (
     <View style={styles.container}>
       <Image
@@ -25,7 +34,7 @@ export default function MyAccount({ navigation }) {
       </Text>
       <TouchableOpacity
         style={[styles.button, { marginTop: 8 }]}
-        onPress={handleLogOut}
+        onPress={() => handleLogOut()}
       >
         <Text style={{ fontSize: 18, fontWeight: "bold", color: "#fff" }}>
           Log out
