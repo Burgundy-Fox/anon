@@ -18,7 +18,7 @@ export function inputRegister(input) {
       },
     })
       .then(({data}) => {
-        console.log(data)
+        // console.log(data)
         auth.createUserWithEmailAndPassword(input.email, input.password)
             .then((userCredential) => {
                 // Signed in
