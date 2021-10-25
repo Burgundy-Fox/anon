@@ -1,9 +1,7 @@
-'use strict';
-const { passwordHasher } = require('../helpers/index')
+"use strict";
+const { passwordHasher } = require("../helpers/index");
 
-const {
-  Model
-} = require('sequelize');
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -13,57 +11,60 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // User.hasMany(models.Hiss, {foreignKey: 'UserId'})
-      User.hasMany(models.Transaction, {foreignKey : 'UserId'})
+      User.hasMany(models.Hiss, { foreignKey: "UserId" });
+      User.hasMany(models.Transaction, { foreignKey: "UserId" });
     }
-  };
-  User.init({
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        notEmpty: true,
-        isEmail: true,
-      }
-    },
-
-    username: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-        isAlphanumeric: true
+  }
+  User.init(
+    {
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+          notEmpty: true,
+          isEmail: true,
+        },
       },
-      unique: true
+
+      username: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          isAlphanumeric: true,
+        },
+        unique: true,
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          len: [8, 50],
+        },
+      },
+      avatar: {
+        type: DataTypes.STRING,
+        validate: {
+          isUrl: true,
+        },
+      },
+      wallet: {
+        type: DataTypes.INTEGER,
+        validate: {
+          min: 0,
+        },
+      },
     },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-        len: [8,50],   
-      }
-    },
-    avatar: {
-      type: DataTypes.STRING,
-      validate: {
-        isUrl: true
-      }
-    },
-    wallet: {
-      type: DataTypes.INTEGER,
-      validate: {
-        min: 0
-      }
+    {
+      sequelize,
+      modelName: "User",
     }
-  }, {
-    sequelize,
-    modelName: 'User',
-  });
+  );
 
   User.beforeCreate((instances, options) => {
-    instances.password = passwordHasher(instances.password)
-  })
+    instances.password = passwordHasher(instances.password);
+  });
   return User;
 };

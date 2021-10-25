@@ -1,5 +1,5 @@
 const { tokenDecoder } = require("../helpers");
-const { User } = require("../models");
+const { User, Hiss } = require("../models");
 
 function authentication(req, res, next) {
   const { access_token } = req.headers;
@@ -31,11 +31,21 @@ function authentication(req, res, next) {
 }
 
 function authorization(req, res, next) {
-  if (req.currentUser.id === +req.params.id) {
-    next();
-  } else {
-    return res.status(401).json("Unauthorized");
-  }
+  const { id } = req.params;
+
+  Hiss.findByPk(id)
+    .then((hiss) => {
+      if (!hiss) {
+        return res.status(404).json("Data Not Found");
+      } else {
+        if (hiss.UserId == req.currentUser.id) {
+          next();
+        } else {
+          return res.status(401).json("Unauthorized");
+        }
+      }
+    })
+    .catch((err) => res.status(500).json(err));
 }
 
 module.exports = {
