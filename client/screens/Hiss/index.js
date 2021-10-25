@@ -52,7 +52,7 @@ export default function Hiss({ navigation }) {
 			}) : null
 
 			content ? formData.append('content', content) : null
-
+			console.log(formData)
 			postHiss(formData)
 				.then((result) => {
 					if (result) {

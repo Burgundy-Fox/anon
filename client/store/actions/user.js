@@ -1,7 +1,7 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-axios.defaults.baseURL = "http://192.168.68.100:4000";
+const baseURL = "http://192.168.18.2:4000";
 import { auth } from '../../firebase/firebase'
 
 export function inputRegister(input) {
@@ -9,7 +9,7 @@ export function inputRegister(input) {
     // console.log(input);
     axios({
       method: "POST",
-      url: `/user/register`,
+      url: `${baseURL}/user/register`,
       data: {
         email: input.email,
         username: input.username,
@@ -42,8 +42,10 @@ const storeData = async (value) => {
   console.log(value);
   const access_token = ["@access_token", value.access_token.toString()];
   const UserId = ["@UserId", value.id.toString()];
+  const avatar = ["@avatar", value.avatar.toString()]
+  const email = ["@email", value.email.toString()]
   try {
-    await AsyncStorage.multiSet([access_token, UserId]);
+    await AsyncStorage.multiSet([access_token, UserId, avatar, email]);
     // await AsyncStorage.setItem("@access_token", value.access_token);
     // await AsyncStorage.setItem("@UserId", value.id);
     return true;
@@ -59,7 +61,7 @@ export function inputLogin(input) {
     // console.log(input);
     return axios({
       method: "POST",
-      url: `/user/login`,
+      url: `${baseURL}/user/login`,
       data: input,
     })
       .then(({ data }) => {
@@ -73,6 +75,7 @@ export function inputLogin(input) {
             })
         // console.log(data);
         dispatch({ type: "SET_ACCESS_TOKEN", payload: data.access_token });
+        dispatch({type: "SET_AVATAR", payload: data.avatar})
         return storeData(data);
       })
       .catch((err) => console.log(err, "server error"));

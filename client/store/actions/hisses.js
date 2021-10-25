@@ -1,12 +1,12 @@
 import axios from "axios";
 
-// axios.defaults.baseURL = "http://192.168.68.100:4000";
+const baseURL = "http://192.168.18.2:4000";
 
 export function getAllHiss(access_token) {
     return (dispatch) => {
         axios({
             method: "GET",
-            url: `http://192.168.68.100:4000/hisses`,
+            url: `${baseURL}/hisses`,
             headers: { access_token },
         })
             .then(({ data }) => {
@@ -21,7 +21,7 @@ export function createHiss(access_token, input) {
         console.log(access_token, input);
         axios({
             method: "POST",
-            url: `/hisses`,
+            url: `${baseURL}/hisses`,
             headers: { access_token },
             data: {
                 content: input,
@@ -38,7 +38,7 @@ export function destroyHiss(access_token, id) {
     return (dispatch) => {
         axios({
             method: "DELETE",
-            url: `/hisses/${id}`,
+            url: `${baseURL}/hisses/${id}`,
             headers: { access_token },
         })
             .then((_) => {

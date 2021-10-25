@@ -16,6 +16,7 @@ import Hiss from "../../components/Hiss";
 export default function MyAccount({ navigation }) {
   const access_token = useSelector((state) => state.usersReducer.access_token);
   const dataHiss = useSelector((state) => state.hissesReducer.dataHiss);
+  const avatar = useSelector(state => state.usersReducer.avatar)
 
   const [UserId, setUserId] = useState("");
 
@@ -51,7 +52,7 @@ export default function MyAccount({ navigation }) {
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: "https://via.placeholder.com/150/54176f" }}
+        source={{ uri: avatar }}
         style={{
           width: 150,
           height: 150,
@@ -61,7 +62,7 @@ export default function MyAccount({ navigation }) {
       <Text style={{ fontSize: 18, color: "#808E9B", marginTop: 5 }}>
         Change Avatar
       </Text>
-      <Text style={{ fontSize: 24, marginTop: 8 }}>Leopoldo_Corkery</Text>
+      <Text style={{ fontSize: 24, marginTop: 8 }}>{`Anon${UserId}`}</Text>
       <Text style={{ fontSize: 20, marginTop: 8 }}>
         <Ionicons name="wallet" size={30} color="black" /> Rp. 5000
       </Text>
