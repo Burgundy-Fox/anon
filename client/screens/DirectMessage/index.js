@@ -15,12 +15,14 @@ import {
     TouchableOpacity,
 } from 'react-native-gesture-handler'
 import { Avatar } from 'react-native-elements/dist/avatar/Avatar'
-import { SvgCssUri, SvgUri } from 'react-native-svg'
+import { SvgCssUri, SvgUri } from 'react-native-svg' 
 import axios from 'axios'
 
 const DirectMessage = ({ navigation, route }) => {
     // console.log(auth.currentUser.photoURL)
     const currentId = auth.currentUser.email
+    // console.log('ini currentUser nya')
+    // console.log(auth.currentUser)
 
     useLayoutEffect(() => {
         return navigation.setOptions({
@@ -70,7 +72,7 @@ const DirectMessage = ({ navigation, route }) => {
         return unsubscribe
     }, [])
     const [users, setUsers] = useState([])
-    console.log(users)
+    // console.log(users)
 
     function handleOnPress(data) {
         // const user = await axios('http://http://192.168.18.2:4000/user/login')
@@ -120,7 +122,7 @@ const DirectMessage = ({ navigation, route }) => {
     if (users.length) {
         const filteredArr = users.reduce((acc, current) => {
             const x = acc.find((item) => item.user2._id === current.user2._id)
-            if (!x) {
+            if (!x) { 
                 return acc.concat([current])
             } else {
                 return acc
@@ -136,7 +138,7 @@ const DirectMessage = ({ navigation, route }) => {
                     renderItem={renderItem}
                     keyExtractor={(item, index) => {
                         // console.log(item.user2._id)
-                        index.toString()
+                        return index.toString()
                     }}
                 />
             </View>

@@ -3,7 +3,7 @@ import 'firebase/auth'
 import 'firebase/firestore'
 
 let firebaseConfig = {
-    apiKey: "",
+    apiKey: "AIzaSyDeY3kco62ikakUtxmiDvXgkGx0_FkyC-Q",
     authDomain: "anon-social-mobile-app.firebaseapp.com",
     projectId: "anon-social-mobile-app",
     storageBucket: "anon-social-mobile-app.appspot.com",
