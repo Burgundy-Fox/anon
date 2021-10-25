@@ -39,13 +39,17 @@ export function inputRegister(input) {
 }
 
 const storeData = async (value) => {
-  // console.log(value)
+  console.log(value);
+  const access_token = ["@access_token", value.access_token.toString()];
+  const UserId = ["@UserId", value.id.toString()];
   try {
-    await AsyncStorage.setItem("@access_token", value);
+    await AsyncStorage.multiSet([access_token, UserId]);
+    // await AsyncStorage.setItem("@access_token", value.access_token);
+    // await AsyncStorage.setItem("@UserId", value.id);
     return true;
   } catch (e) {
     // saving error
-    console.log(e)
+    console.log(e, "...............>>>>>");
     return false;
   }
 };
@@ -68,8 +72,9 @@ export function inputLogin(input) {
                 console.log(error, 'error inputlogin')
             })
         // console.log(data);
-        return storeData(data.access_token);
+        dispatch({ type: "SET_ACCESS_TOKEN", payload: data.access_token });
+        return storeData(data);
       })
-      .catch((err) => console.log(err, 'server error'));
+      .catch((err) => console.log(err, "server error"));
   };
 }

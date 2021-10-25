@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Hiss.belongsTo(models.User, { foreignKey: "UserId" });
     }
   }
   Hiss.init(

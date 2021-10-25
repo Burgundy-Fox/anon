@@ -1,17 +1,47 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
-import { auth } from '../../firebase/firebase'
+import { auth } from "../../firebase/firebase";
+import Hiss from "../../components/Hiss";
 
 export default function MyAccount({ navigation }) {
+  const access_token = useSelector((state) => state.usersReducer.access_token);
+  const dataHiss = useSelector((state) => state.hissesReducer.dataHiss);
+
+  const [UserId, setUserId] = useState("");
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem("@UserId");
+      if (value !== null) {
+        // value previously stored
+        setUserId(value);
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
+
   const handleLogOut = async () => {
     try {
       await AsyncStorage.clear();
-      await auth.signOut()
+      await auth.signOut();
       navigation.replace("Login");
     } catch (e) {
-      console.log(e)
+      console.log(e);
       // clear error
     }
 
@@ -43,6 +73,13 @@ export default function MyAccount({ navigation }) {
           Log out
         </Text>
       </TouchableOpacity>
+      <FlatList
+        data={dataHiss.filter((el) => el.User.id == UserId)}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => {
+          return <Hiss item={item} />;
+        }}
+      />
     </View>
   );
 }
