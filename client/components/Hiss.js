@@ -8,7 +8,6 @@ import {
 	StyleSheet,
 	TouchableOpacity,
 } from "react-native";
-import { SvgUri } from "react-native-svg";
 
 import { FontAwesome } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
@@ -27,12 +26,13 @@ export default function Hiss({ navigation, item, route }) {
 		console.log("like bertambah 1");
 	}
 
-	function handleEdit(access_token, id) {
-		console.log(access_token, id);
+	function handleEdit(access_token, hissId) {
+		// console.log(access_token, id);
+		navigation.navigate("Hiss", { hissId, from: route });
 	}
 
 	function handleDelete(access_token, id) {
-		dispatch(destroyHiss(access_token, id));
+		dispatch(destroyHiss(access_token, id))
 	}
 
 	//   return (

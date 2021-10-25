@@ -39,11 +39,11 @@ export function inputRegister(input) {
 }
 
 const storeData = async (value) => {
-  console.log(value);
   const access_token = ["@access_token", value.access_token.toString()];
   const UserId = ["@UserId", value.id.toString()];
+  const Username = ["@Username", value.username.toString()];
   try {
-    await AsyncStorage.multiSet([access_token, UserId]);
+    await AsyncStorage.multiSet([access_token, UserId, Username]);
     // await AsyncStorage.setItem("@access_token", value.access_token);
     // await AsyncStorage.setItem("@UserId", value.id);
     return true;

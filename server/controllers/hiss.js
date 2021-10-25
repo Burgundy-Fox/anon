@@ -60,9 +60,8 @@ class HissController {
 
   static updateHiss(req, res) {
     const id = +req.params.id;
-
     Hiss.update(
-      { content: req.body.content, image_url: req.body.image_url },
+      { content: req.body.content},
       {
         where: {
           id,
