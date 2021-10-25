@@ -1,40 +1,38 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const baseURL = "http://192.168.100.53:4000";
-
-import { auth } from "../../firebase/firebase";
+axios.defaults.baseURL = "http://192.168.68.100:4000";
+import { auth } from '../../firebase/firebase'
 
 export function inputRegister(input) {
   return (dispatch) => {
     // console.log(input);
     axios({
       method: "POST",
-      url: `${baseURL}/user/register`,
+      url: `/user/register`,
       data: {
         email: input.email,
         username: input.username,
         password: input.password,
       },
     })
-      .then(({ data }) => {
-        console.log(data);
-        auth
-          .createUserWithEmailAndPassword(input.email, input.password)
-          .then((userCredential) => {
-            // Signed in
-            // console.log(avatar)
-            var user = userCredential.user;
-            user.updateProfile({
-              email: data.email,
-              photoURL: data.avatar,
-            });
-            dispatch({ type: "IS_REGISTER", payload: true });
-          })
-          .catch((error) => {
-            var errorMessage = error.message;
-            console.log(errorMessage);
-          });
+      .then(({data}) => {
+        // console.log(data)
+        auth.createUserWithEmailAndPassword(input.email, input.password)
+            .then((userCredential) => {
+                // Signed in
+                // console.log(avatar)
+                var user = userCredential.user
+                user.updateProfile({
+                    email: data.email,
+                    photoURL: data.avatar
+                })
+                dispatch({ type: "IS_REGISTER", payload: true })
+            })
+            .catch((error) => {
+                var errorMessage = error.message
+                console.log(errorMessage)
+            })
       })
       .catch((_) => dispatch({ type: "IS_REGISTER", payload: false }));
   };
@@ -61,19 +59,18 @@ export function inputLogin(input) {
     // console.log(input);
     return axios({
       method: "POST",
-      url: `${baseURL}/user/login`,
+      url: `/user/login`,
       data: input,
     })
       .then(({ data }) => {
         // console.log(data)
-        auth
-          .signInWithEmailAndPassword(data.email, input.password)
-          .then((userCredential) => {
-            console.log(userCredential);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        auth.signInWithEmailAndPassword(data.email, input.password)
+            .then((userCredential) => {
+                 console.log(userCredential)
+            })
+            .catch((error) => {
+                console.log(error, 'error inputlogin')
+            })
         // console.log(data);
         dispatch({ type: "SET_ACCESS_TOKEN", payload: data.access_token });
         return storeData(data);

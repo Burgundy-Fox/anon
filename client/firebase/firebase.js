@@ -3,12 +3,12 @@ import "firebase/auth";
 import "firebase/firestore";
 
 let firebaseConfig = {
-  apiKey: "",
-  authDomain: "anon-social-mobile-app.firebaseapp.com",
-  projectId: "anon-social-mobile-app",
-  storageBucket: "anon-social-mobile-app.appspot.com",
-  messagingSenderId: "82126937195",
-  appId: "1:82126937195:web:84de9f0fdb7a5e1a18a52e",
+    apiKey: "AIzaSyDeY3kco62ikakUtxmiDvXgkGx0_FkyC-Q",
+    authDomain: "anon-social-mobile-app.firebaseapp.com",
+    projectId: "anon-social-mobile-app",
+    storageBucket: "anon-social-mobile-app.appspot.com",
+    messagingSenderId: "82126937195",
+    appId: "1:82126937195:web:84de9f0fdb7a5e1a18a52e"
 };
 
 let app;
