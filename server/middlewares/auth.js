@@ -5,7 +5,7 @@ function authentication(req, res, next) {
   const { access_token } = req.headers;
 
   if (!access_token) {
-    return res.status(401).json("Access token missing");
+    throw ({name: 'JsonWebTokenError'})
   }
 
   try {
@@ -14,7 +14,7 @@ function authentication(req, res, next) {
     User.findByPk(userDecoded.id)
       .then((user) => {
         if (!user) {
-          return res.status(401).json("Unauthenticated");
+          throw ({name: "authentication error"})
         } else {
           req.currentUser = {
             id: user.id,
@@ -22,9 +22,9 @@ function authentication(req, res, next) {
           next();
         }
       })
-      .catch((error) => res.status(500).json(error));
+      .catch((error) => next(error));
   } catch (error) {
-    return res.status(500).json(error);
+    return next(error);
   }
 }
 
@@ -36,13 +36,13 @@ function authorization(req, res, next) {
         if (hiss.UserId == id) {
           next()
         } else {
-          throw "Unauthorized"
+          throw({name: "authorization error"})
         }
       } else {
-        throw "Not Found"
+        throw({name: "not found"})
       }
     })
-    .catch((err) => res.status(401).json(err) )
+    .catch((err) => next(err) )
 }
 
 module.exports = {

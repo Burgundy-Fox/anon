@@ -5,7 +5,8 @@ const server = require("http").createServer(app);
 const PORT = 4000
 const routes = require('./routes')
 const cors = require('cors')
-const UserController = require('./controllers/UserController')
+const UserController = require('./controllers/UserController');
+const errHandler = require("./middlewares/errHandler");
 const io = require("socket.io")(server, {
   cors: {
     origin: '*',
@@ -17,7 +18,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use(routes);
-
+app.use(errHandler)
 if (process.env.NODE_ENV == 'test') module.exports = app
 else {
   server.listen(PORT, () => {

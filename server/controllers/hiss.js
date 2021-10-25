@@ -1,7 +1,7 @@
 const { Hiss } = require("../models");
 
 class HissController {
-  static createHiss(req, res) {
+  static createHiss(req, res, next) {
     const input = {
       content: req.body.content,
       image_url: req.body.image_url,
@@ -11,24 +11,24 @@ class HissController {
 
     Hiss.create(input)
       .then((hiss) => res.status(201).json(hiss))
-      .catch((error) => res.status(500).json(error));
+      .catch((error) => next(error));
   }
 
-  static getAllHiss(req, res) {
+  static getAllHiss(req, res, next) {
     Hiss.findAll({
       order: [["id", "ASC"]],
     })
       .then((hisses) => res.status(200).json(hisses))
-      .catch((error) => res.status(500).json(error));
+      .catch((error) => next(error));
   }
 
-  static getHissById(req, res) {
+  static getHissById(req, res, next) {
     Hiss.findAll({where: {UserId : req.params.id}})
       .then((hiss) => res.status(200).json(hiss))
-      .catch((error) => res.status(500).json(error));
+      .catch((error) => next(error));
   }
 
-  static updateLikeHiss(req, res) {
+  static updateLikeHiss(req, res, next) {
     const id = +req.params.id;
 
     Hiss.update(
@@ -45,10 +45,10 @@ class HissController {
 
         return res.status(200).json(resultUpdateLikeHiss);
       })
-      .catch((error) => res.status(500).json({ error }));
+      .catch((error) => next({ error }));
   }
 
-  static updateHiss(req, res) {
+  static updateHiss(req, res, next) {
     const id = +req.params.id;
 
     Hiss.update(
@@ -64,10 +64,10 @@ class HissController {
         const resultUpdateHiss = hiss[1][0];
         return res.status(200).json(resultUpdateHiss);
       })
-      .catch((error) => res.status(500).json({ error }));
+      .catch((error) => next({ error }));
   }
 
-  static deleteHiss(req, res) {
+  static deleteHiss(req, res, next) {
     const id = +req.params.id;
 
     Hiss.destroy({
@@ -79,7 +79,7 @@ class HissController {
           success_message: "Data deleted successfully",
         });
       })
-      .catch((error) => res.status(500).json(error));
+      .catch((error) => next(error));
   }
 }
 

@@ -9,6 +9,7 @@ let snap = new midtransClient.Snap({
 });
 
 class Controller {
+   /* istanbul ignore next */
   static midtransToken(req, res, next) {
     let order_id = "TOP" + +req.body.price + "TOPBUG" + new Date().toISOString() + "AnonUser" + req.currentUser.id
 
@@ -23,11 +24,10 @@ class Controller {
 
     snap.createTransaction(parameter)
       .then((transaction) => {
-        // transaction token
         res.status(200).json({ transaction });
       })
       .catch(err => {
-        res.status(500).json(err)
+        next(err)
       })
   }
 
@@ -79,25 +79,19 @@ class Controller {
                     res.status(200).json({
                       message: 'Transaction succesfully updated'
                     });
-                    // res.status(200).json({
-                    //     id: user[0][0][0].id,
-                    //     username: user[0][0][0].username,
-                    //     email: user[0][0][0].email,
-                    //     wallet: user[0][0][0].wallet
-                    // })
                   }).catch((err) => {
-                    res.status(500).json(err)
+                    next(err)
                   });
 
               }
 
               else throw ({ name: "Transaction Not Found" });
             }).catch((err) => {
-              res.status(500).json(err)
+              next(err)
             });
         }
       }).catch((err) => {
-        res.status(500).json(err)
+        next(err)
       });
   }
 
@@ -111,7 +105,7 @@ class Controller {
       .then((result) => {
         res.status(200).json(result)
       }).catch((err) => {
-        res.status(500).json(err)
+        next(err)
       });
   }
 }

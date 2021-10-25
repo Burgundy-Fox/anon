@@ -2,7 +2,7 @@ const { User } = require('../models')
 const { passwordDecoder, tokenGenerator } = require('../helpers/index')
 
 class UserController {
-    static async register(req, res) {
+    static async register(req, res, next) {
         const { email, username, password } = req.body
    
         const random = Math.floor(Math.random() * 10000)
@@ -23,11 +23,11 @@ class UserController {
                 wallet: user.wallet
             })
         } catch (error) {
-            res.status(500).json(error)
+           next(error)
         }
     }
 
-    static async login(req, res) {
+    static async login(req, res, next) {
         const { username, password } = req.body
         try {
             const user = await User.findOne({
@@ -35,10 +35,10 @@ class UserController {
                     username,
                 },
             })
-            if (!user) throw { error: 'User doesnt exist!' }
+            if (!user) throw ({ name: 'authentication error' })
             const isCorrect = passwordDecoder(password, user.password)
 
-            if (!isCorrect) throw { error: 'Wrong Password!' }
+            if (!isCorrect) throw ({ name: 'login failed' })
             const access_token = tokenGenerator({
                 id: user.id,
                 username: user.username,
@@ -53,11 +53,12 @@ class UserController {
                 access_token: access_token,
             })
         } catch (error) {
-            res.status(500).json(error)
+          console.log(error);
+           next(error)
         }
     }
 
-    static async updateAvatar (req, res) {
+    static async updateAvatar (req, res, next) {
         const id = +req.params.id
         const avatar = req.body.avatar
         
@@ -69,7 +70,7 @@ class UserController {
                 returning: true
             })
 
-            if (user[0] === 0) throw { error: 'user not found!' }
+            if (user[0] === 0) throw { name: 'update failed' }
             res.status(200).json({
                 id: user[1][0].id,
                 username: user[1][0].username,
@@ -79,34 +80,11 @@ class UserController {
             })
             
         } catch (error) {
-            res.status(500).json(error)
+           next(error)
         }
     }
 
-    // static async addWallet(req, res) {
-    //     const id = +req.params.id
-    //     const wallet = +req.body.wallet
-     
-    //     try {
-    //         const user = await User.increment('wallet', { 
-    //             by: wallet,
-    //             where: {
-    //                 id
-    //             }
-    //         })
-    //         res.status(200).json({
-    //             id: user[0][0][0].id,
-    //             username: user[0][0][0].username,
-    //             email: user[0][0][0].email,
-    //             wallet: user[0][0][0].wallet
-    //         })
-    //     } catch (error) {
-    //         res.status(500).json(error)
-    //     }
-    // }
-
-   
-    static async buyItem(req, res) {
+    static async buyItem(req, res, next) {
         const id =  +req.params.id
         const price = +req.body.price
 
@@ -117,7 +95,7 @@ class UserController {
                     id
                 }
             })
-            if (user[0][1] === 0) throw { error: 'user not found!' }
+            if (user[0][1] === 0) throw { name: 'authentication error' }
             res.status(200).json({
                 id: user[0][0][0].id,
                 username: user[0][0][0].username,
@@ -125,7 +103,7 @@ class UserController {
                 wallet: user[0][0][0].wallet
             })
         } catch (error) {
-            res.status(500).json(error)
+           next(error)
         }
     }
 }

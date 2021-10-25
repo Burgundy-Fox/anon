@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1634818531994" clover="3.2.0">
-  <project timestamp="1634818531995" name="All files">
-    <metrics statements="213" coveredstatements="194" conditionals="33" coveredconditionals="25" methods="58" coveredmethods="46" elements="304" coveredelements="265" complexity="0" loc="213" ncloc="213" packages="6" files="14" classes="14"/>
+<coverage generated="1634902666265" clover="3.2.0">
+  <project timestamp="1634902666265" name="All files">
+    <metrics statements="208" coveredstatements="194" conditionals="33" coveredconditionals="25" methods="55" coveredmethods="46" elements="296" coveredelements="265" complexity="0" loc="208" ncloc="208" packages="6" files="14" classes="14"/>
     <package name="server">
       <metrics statements="16" coveredstatements="14" conditionals="4" coveredconditionals="2" methods="1" coveredmethods="0"/>
       <file name="app.js" path="C:\Users\asus\tugasFase3\anon\server\app.js">
@@ -25,40 +25,35 @@
       </file>
     </package>
     <package name="server.controllers">
-      <metrics statements="89" coveredstatements="76" conditionals="12" coveredconditionals="11" methods="37" coveredmethods="27"/>
+      <metrics statements="84" coveredstatements="76" conditionals="12" coveredconditionals="11" methods="34" coveredmethods="27"/>
       <file name="TransactionController.js" path="C:\Users\asus\tugasFase3\anon\server\controllers\TransactionController.js">
-        <metrics statements="31" coveredstatements="23" conditionals="4" coveredconditionals="4" methods="15" coveredmethods="9"/>
+        <metrics statements="26" coveredstatements="23" conditionals="4" coveredconditionals="4" methods="12" coveredmethods="9"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
-        <line num="13" count="0" type="stmt"/>
-        <line num="15" count="0" type="stmt"/>
-        <line num="24" count="0" type="stmt"/>
-        <line num="27" count="0" type="stmt"/>
-        <line num="30" count="0" type="stmt"/>
-        <line num="36" count="4" type="stmt"/>
-        <line num="38" count="4" type="stmt"/>
-        <line num="44" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="45" count="1" type="stmt"/>
-        <line num="51" count="1" type="stmt"/>
-        <line num="53" count="1" type="stmt"/>
-        <line num="55" count="0" type="stmt"/>
-        <line num="58" count="3" type="stmt"/>
-        <line num="61" count="3" type="stmt"/>
-        <line num="67" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="69" count="2" type="stmt"/>
+        <line num="37" count="4" type="stmt"/>
+        <line num="39" count="4" type="stmt"/>
+        <line num="45" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="46" count="1" type="stmt"/>
+        <line num="52" count="1" type="stmt"/>
+        <line num="54" count="1" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="59" count="3" type="stmt"/>
+        <line num="62" count="3" type="stmt"/>
+        <line num="68" count="3" type="cond" truecount="2" falsecount="0"/>
         <line num="70" count="2" type="stmt"/>
-        <line num="72" count="2" type="stmt"/>
-        <line num="79" count="1" type="stmt"/>
-        <line num="89" count="1" type="stmt"/>
-        <line num="94" count="1" type="stmt"/>
-        <line num="96" count="1" type="stmt"/>
-        <line num="100" count="0" type="stmt"/>
-        <line num="105" count="1" type="stmt"/>
-        <line num="112" count="1" type="stmt"/>
-        <line num="114" count="0" type="stmt"/>
-        <line num="119" count="1" type="stmt"/>
+        <line num="71" count="2" type="stmt"/>
+        <line num="73" count="2" type="stmt"/>
+        <line num="80" count="1" type="stmt"/>
+        <line num="90" count="1" type="stmt"/>
+        <line num="95" count="1" type="stmt"/>
+        <line num="97" count="1" type="stmt"/>
+        <line num="101" count="0" type="stmt"/>
+        <line num="106" count="1" type="stmt"/>
+        <line num="113" count="1" type="stmt"/>
+        <line num="115" count="0" type="stmt"/>
+        <line num="120" count="1" type="stmt"/>
       </file>
       <file name="UserController.js" path="C:\Users\asus\tugasFase3\anon\server\controllers\UserController.js">
         <metrics statements="32" coveredstatements="31" conditionals="8" coveredconditionals="7" methods="4" coveredmethods="4"/>
