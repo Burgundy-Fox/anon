@@ -6,7 +6,7 @@ export function getAllHiss(access_token) {
     return (dispatch) => {
         axios({
             method: "GET",
-            url: `http://192.168.68.100:4000/hisses`,
+            url: `/hisses`,
             headers: { access_token },
         })
             .then(({ data }) => {

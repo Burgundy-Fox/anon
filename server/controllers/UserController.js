@@ -82,28 +82,43 @@ class UserController {
         }
     }
 
-    static async addWallet(req, res) {
-        const id = +req.params.id
-        const wallet = +req.body.wallet
-     
-        try {
-            const user = await User.increment('wallet', { 
-                by: wallet,
-                where: {
-                    id
-                }
-            })
-         
-            res.status(200).json({
-                id: user[0][0][0].id,
-                username: user[0][0][0].username,
-                email: user[0][0][0].email,
-                wallet: user[0][0][0].wallet
-            })
-        } catch (error) {
-            res.status(500).json(error)
-        }
+    static getUserDetails(req, res, next){
+        console.log('test >>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        User.findOne({
+            where : {
+                id : req.currentUser.id
+            },
+            attributes : {exclude : ['password']}
+        })
+        .then((result) => {
+            res.status(200).json(result)
+        }).catch((err) => {
+            res.status(500).json(err)
+        });
     }
+
+    // static async addWallet(req, res) {
+    //     const id = +req.params.id
+    //     const wallet = +req.body.wallet
+     
+    //     try {
+    //         const user = await User.increment('wallet', { 
+    //             by: wallet,
+    //             where: {
+    //                 id
+    //             }
+    //         })
+         
+    //         res.status(200).json({
+    //             id: user[0][0][0].id,
+    //             username: user[0][0][0].username,
+    //             email: user[0][0][0].email,
+    //             wallet: user[0][0][0].wallet
+    //         })
+    //     } catch (error) {
+    //         res.status(500).json(error)
+    //     }
+    // }
 
    
     static async buyItem(req, res) {

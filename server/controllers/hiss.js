@@ -9,7 +9,6 @@ class HissController {
       like: 0,
       UserId: +req.currentUser.id,
     };
-
     Hiss.create(input)
       .then((hiss) => res.status(201).json(hiss))
       .catch((error) => res.status(500).json(error));

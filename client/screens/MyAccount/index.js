@@ -12,14 +12,19 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
 import { auth } from "../../firebase/firebase";
 import Hiss from "../../components/Hiss";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { getUserDetails } from "../../store/actions/user";
+
 
 export default function MyAccount({ navigation, route }) {
-	const {username} = useSelector((state) => state.usersReducer);
+	const {username, access_token, wallet} = useSelector((state) => state.usersReducer);
 	const {dataHiss} = useSelector((state) => state.hissesReducer);
+	const dispatch = useDispatch()
 
 	const [UserId, setUserId] = useState("");
 
 	useEffect(() => {
+		dispatch(getUserDetails(access_token))
 		getData();
 	}, []);
 
@@ -48,6 +53,10 @@ export default function MyAccount({ navigation, route }) {
 		// console.log("Done.");
 	};
 
+	function handleTopUp(){
+		navigation.navigate("TopUpWallet")
+	}
+
 	return (
 		<View style={styles.container}>
 			<View style={{flexDirection: "row", marginHorizontal:30}}>
@@ -66,9 +75,13 @@ export default function MyAccount({ navigation, route }) {
 				</View>
 				<View style={{justifyContent: "space-between", marginLeft: 50}}>
 					<Text style={{ fontSize: 24}}>{username}</Text>
-					<Text style={{ fontSize: 20}}>
-						<Ionicons name="wallet" size={30} color="black" /> Rp. 5000
-					</Text>
+					<TouchableOpacity 
+						style={{flexDirection: "row"}}
+						onPress={() => handleTopUp()}
+					>
+						<MaterialCommunityIcons name="wallet-plus" size={30} color="black" /> 
+						<Text style={{ fontSize: 20}}> Rp. {wallet.toLocaleString('id')}</Text>
+					</TouchableOpacity>
 					<TouchableOpacity
 						style={[styles.button]}
 						onPress={() => handleLogOut()}

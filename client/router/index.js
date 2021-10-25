@@ -13,6 +13,8 @@ import {
 	MyAccount,
 	Reply,
 	Hiss,
+	TopUp,
+	Webview
 } from "../screens";
 
 import { Entypo } from "@expo/vector-icons";
@@ -212,6 +214,14 @@ export default function Router() {
 				name="MainApp"
 				component={MainApp}
 				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name="TopUpWallet"
+				component={TopUp}
+			/>
+			<Stack.Screen
+				name="Webview"
+				component={Webview}
 			/>
 		</Stack.Navigator>
 	);
