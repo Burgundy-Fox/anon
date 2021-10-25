@@ -5,10 +5,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SplashScreen({ navigation }) {
-  const getData = async () => {
+
+  setTimeout(async () => {
     try {
       const value = await AsyncStorage.getItem("@access_token");
-      if (value !== null) {
+      if (value) {
         return navigation.replace("MainApp");
       } else {
         return navigation.replace("Login");
@@ -16,11 +17,8 @@ export default function SplashScreen({ navigation }) {
     } catch (e) {
       console.log(e);
     }
-  };
+  }, 3000);
 
-  setTimeout(() => {
-    getData();
-  }, 5000);
   return (
     <SafeAreaView style={styles.container}>
       <View>
