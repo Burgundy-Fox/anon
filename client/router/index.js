@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -21,6 +22,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SplashScreen from "../screens/Splash Screen";
 import Chat from "../screens/Chat";
+import { postHiss } from "../store/actions/hisses";
 
 function MainApp({ navigation }) {
   const Tab = createBottomTabNavigator();
@@ -127,6 +129,8 @@ function MainApp({ navigation }) {
 export default function Router() {
   const Stack = createNativeStackNavigator();
 
+  const dispacth = useDispatch();
+
   function handleHiss() {
     console.log("hiss");
   }
@@ -176,10 +180,7 @@ export default function Router() {
           ),
         }}
       />
-      <Stack.Screen 
-      name="Chat"
-      component={Chat}
-      />
+      <Stack.Screen name="Chat" component={Chat} />
       <Stack.Screen
         name="Reply"
         component={Reply}
