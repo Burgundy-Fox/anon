@@ -10,7 +10,8 @@ import { Avatar } from 'react-native-elements/dist/avatar/Avatar'
 import { GiftedChat } from 'react-native-gifted-chat'
 
 const Chat = ({ navigation, route }) => {
-
+    console.log('ini params nya')
+    console.log(route.params)
     const currentId = auth.currentUser.email
 
     useLayoutEffect(() => {
@@ -31,19 +32,6 @@ const Chat = ({ navigation, route }) => {
                     </View>
                 )
             }
-            // ,
-            // headerRight: () => {
-            //     return (
-            //         <TouchableOpacity
-            //             style={{
-            //                 marginRight: 30,
-            //             }}
-            //             onPress={signOut}
-            //         >
-            //             <AntDesign name="logout" size={24} color="black" />
-            //         </TouchableOpacity>
-            //     )
-            // },
         })
     })
 
@@ -85,11 +73,23 @@ const Chat = ({ navigation, route }) => {
             GiftedChat.append(previousMessages, messages)
         )
         const { _id, createdAt, text, user } = messages[0]
-
+        // if (route.params.user2) {
+        //     db.collection('chats').add({
+        //         ...messages[0],
+        //         user2: route.params.user2
+        //     })
+        // } else {
+        //     db.collection('chats').add({
+        //         ...messages[0],
+        //         user: route.params.user
+        //     })
+        // }
         db.collection('chats').add({
             ...messages[0],
-            user2: route.params.user2,
+            user: route.params.user,
+            user2: route.params.user2
         })
+        
     }, [])
 
     return (

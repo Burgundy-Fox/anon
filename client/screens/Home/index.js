@@ -46,7 +46,7 @@ export default function Home({ navigation, route }) {
 				data={dataHiss}
 				keyExtractor={(item) => item.id.toString()}
 				renderItem={({ item }) => {
-					return <Hiss item={item} route={route.name} />;
+					return <Hiss item={item} route={route.name} navigation={navigation} />;
 				}}
 			/>
 		</View>

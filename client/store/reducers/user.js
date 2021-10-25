@@ -2,6 +2,7 @@ const initialState = {
   isRegister: false,
   isLogin: false,
   access_token: null,
+  avatar: ''
 };
 
 export default function usersReducer(state = initialState, action) {
@@ -22,6 +23,12 @@ export default function usersReducer(state = initialState, action) {
       return {
         ...state,
         access_token: action.payload,
+      };
+    }
+    case "SET_AVATAR": {
+      return {
+        ...state,
+        avatar: action.payload,
       };
     }
     default:
