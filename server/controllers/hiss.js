@@ -1,4 +1,4 @@
-const { Hiss } = require("../models");
+const { User, Hiss } = require("../models");
 
 class HissController {
   static createHiss(req, res) {
@@ -18,6 +18,11 @@ class HissController {
   static getAllHiss(req, res) {
     Hiss.findAll({
       order: [["createdAt", "DESC"]],
+      include: [
+        {
+          model: User,
+        },
+      ],
     })
       .then((hisses) => res.status(200).json(hisses))
       .catch((error) => res.status(500).json(error));
