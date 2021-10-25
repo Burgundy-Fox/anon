@@ -10,8 +10,8 @@ import { Avatar } from 'react-native-elements/dist/avatar/Avatar'
 import { GiftedChat } from 'react-native-gifted-chat'
 
 const Chat = ({ navigation, route }) => {
-    console.log('ini params nya')
-    console.log(route.params)
+    // console.log('ini params nya')
+    // console.log(route.params)
     const currentId = auth.currentUser.email
 
     useLayoutEffect(() => {
