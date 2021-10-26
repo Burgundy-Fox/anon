@@ -4,6 +4,7 @@ const initialState = {
   access_token: null,
   username : '',
   wallet : 0,
+  avatar: ''
 };
 
 export default function usersReducer(state = initialState, action) {
@@ -35,7 +36,13 @@ export default function usersReducer(state = initialState, action) {
     case "SET_USERWALLET": {
       return {
         ...state,
-        wallet: action.payload,
+        wallet: action.payload
+      }
+    }
+    case "SET_AVATAR": {
+      return {
+        ...state,
+        avatar: action.payload,
       };
     }
     default:

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -25,8 +25,25 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SplashScreen from "../screens/Splash Screen";
 import Chat from "../screens/Chat";
 import { postHiss } from "../store/actions/hisses";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function MainApp({ navigation }) {
+	const [avatar, setAvatar] = useState('')
+	const dispatch = useDispatch()
+	// const avatar = useSelector(state => state.usersReducer.avatar)
+	// co
+	async function loadAvatar() {
+		try {
+			let ava = await AsyncStorage.getItem('@avatar')
+			setAvatar(ava)
+			// dispatch({type: 'SET AVATAR', payload: ava})
+		} catch (error) {
+			console.log(error)
+		}	
+	}
+
+	loadAvatar()
+
 	const Tab = createBottomTabNavigator();
 
 	function handleMyAccount() {
@@ -79,7 +96,7 @@ function MainApp({ navigation }) {
 					headerLeft: () => (
 						<TouchableOpacity onPress={() => handleMyAccount()}>
 							<Image
-								source={{ uri: "https://via.placeholder.com/150/54176f" }}
+								source={{ uri: avatar }}
 								style={{
 									width: 40,
 									height: 40,

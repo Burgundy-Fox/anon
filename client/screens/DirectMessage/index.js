@@ -1,5 +1,13 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
-import { View, Text, Button, FlatList } from 'react-native'
+import {
+    View,
+    Text,
+    Button,
+    FlatList,
+    Card,
+    Image,
+    StyleSheet,
+} from 'react-native'
 import { db, auth } from '../../firebase/firebase'
 import { AntDesign } from '@expo/vector-icons'
 import {
@@ -7,22 +15,14 @@ import {
     TouchableOpacity,
 } from 'react-native-gesture-handler'
 import { Avatar } from 'react-native-elements/dist/avatar/Avatar'
-import { SvgUri } from 'react-native-svg'
+import { SvgCssUri, SvgUri } from 'react-native-svg'
+import axios from 'axios'
 
 const DirectMessage = ({ navigation, route }) => {
     // console.log(auth.currentUser.photoURL)
     const currentId = auth.currentUser.email
-
-    const signOut = () => {
-        auth.signOut()
-            .then(() => {
-                // Sign-out successful.
-                navigation.replace('Login')
-            })
-            .catch((error) => {
-                // An error happened.
-            })
-    }
+    // console.log('ini currentUser nya')
+    // console.log(auth.currentUser)
 
     useLayoutEffect(() => {
         return navigation.setOptions({
@@ -33,10 +33,6 @@ const DirectMessage = ({ navigation, route }) => {
                             marginRight: 30,
                         }}
                     >
-                        {/* <SvgUri 
-                        height="100%"
-                        width="100%"
-                        uri="https://avatars.dicebear.com/api/bottts/anon-1489.svg"/> */}
                         <Avatar
                             rounded
                             source={{
@@ -44,18 +40,6 @@ const DirectMessage = ({ navigation, route }) => {
                             }}
                         ></Avatar>
                     </View>
-                )
-            },
-            headerRight: () => {
-                return (
-                    <TouchableOpacity
-                        style={{
-                            marginRight: 30,
-                        }}
-                        onPress={signOut}
-                    >
-                        <AntDesign name="logout" size={24} color="black" />
-                    </TouchableOpacity>
                 )
             },
         })
@@ -69,55 +53,151 @@ const DirectMessage = ({ navigation, route }) => {
                 setUsers(
                     snapshot.docs
                         .map((doc) => {
+                            // console.log(doc)
                             if (
-                                (doc.data().user._id === currentId ||
-                                    doc.data().user2._id === currentId) &&
-                                (doc.data().user._id === 'bangjago@mail.com' ||
-                                    doc.data().user2._id === 'bangjago@mail.com')
+                                doc.data().user._id === currentId ||
+                                doc.data().user2._id === currentId
                             ) {
                                 // console.log(doc)
                                 return {
-                                    user1: doc.data().user,
+                                    user: doc.data().user,
+                                    text: doc.data().text,
                                     user2: doc.data().user2,
                                 }
                             }
                         })
                         .filter((el) => el !== undefined)
                 )
-                // console.log(snapshot.docs)
-                // setUsers(
-                //     snapshot.docs.map((doc) => {
-                //         console.log(doc)
-                //     })
-                // )
             })
         return unsubscribe
     }, [])
     const [users, setUsers] = useState([])
-    console.log(users)
+    // console.log(users)
 
-    const renderItem = ({item }) => (
-        
-        // console.log(user)
-        <View>
-        <Text>{item.user2._id}</Text>
-        </View>
-    );
+    function handleOnPress(data) {
+        // const user = await axios('http://http://192.168.18.2:4000/user/login')
+        // console.log('ini data')
+        // console.log(data)
+        if (currentId === data.user2._id) {
+            navigation.navigate('Chat', {
+                user2: {
+                    _id: data.user._id,
+                    avatar: data.user.avatar,
+                    username: data.user.username
+                },
+                user: {
+                    _id: data.user2._id,
+                    avatar: data.user2.avatar,
+                    username: data.user2.username
+                },
+            })
+        } else {
+            navigation.navigate('Chat', {
+                user2: {
+                    _id: data.user2._id,
+                    avatar: data.user2.avatar,
+                    username: data.user2.username
+
+                },
+                user: {
+                    _id: data.user._id,
+                    avatar: data.user.avatar,
+                    username: data.user.username
+                },
+            })
+        }
+    }
+
+    const renderItem = ({ item }) => (
+        <TouchableOpacity onPress={() => handleOnPress(item)}>
+            <View style={styles.container}>
+            <View>
+                {item.user2._id !== currentId ? 
+                <>
+                <Image style={styles.img} source={{ uri: item.user2.avatar }} />
+                    <Text
+                        style={{
+                            marginVertical: 5,
+                            fontSize: 16,
+                            fontWeight: 'bold',
+                        }}
+                    >
+                        {item.user2.username}
+                    </Text> 
+                    </>
+                    :
+                    <>
+                    <Image style={styles.img} source={{ uri: item.user.avatar }} />
+                    <Text
+                        style={{
+                            marginVertical: 5,
+                            fontSize: 16,
+                            fontWeight: 'bold',
+                        }}
+                    >
+                        {item.user.username}
+                    </Text>  
+                    </>}     
+                <View>
+                    {/* {console.log(item.user2._id)}
+                    {console.log(currentId, 'ini currentId')} */}
+                </View>
+                    <Text>{`·>  ${item.text}`}</Text>
+                </View>
+            </View>
+        </TouchableOpacity>
+    )
 
     if (users.length) {
+        const filteredArr = users.reduce((acc, current) => {
+            const x = acc.find((item) => item.user2._id === current.user2._id)
+            if (!x) {
+                return acc.concat([current])
+            } else {
+                return acc
+            }
+        }, [])
+        const filteredArr2 = filteredArr.reduce((acc, current) => {
+            const x = acc.find((item) => item.user._id === current.user2._id)
+            if (!x) {
+                return acc.concat([current])
+            } else {
+                return acc
+            }
+        }, [])
+
         return (
-            <View>
+            <View styles={styles.container}>
                 <FlatList
-                    data={users}
+                    data={filteredArr2}
                     renderItem={renderItem}
-                    keyExtractor={(item, index) => index}
+                    keyExtractor={(item, index) => {
+                        // console.log(item)
+                        return index.toString()
+                    }}
                 />
             </View>
         )
     } else {
         return <Text>Loading...</Text>
+        // return <Button title="bud"
+        // onPress={()=> handleOnPress('bangjago@mail.com')}></Button>
     }
-  
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        padding: 10,
+        borderWidth: 1,
+        flexDirection:'row',
+    },
+    img: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+    },
+})
 
 export default DirectMessage

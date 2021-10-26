@@ -42,8 +42,10 @@ const storeData = async (value) => {
 	const access_token = ["@access_token", value.access_token.toString()];
 	const UserId = ["@UserId", value.id.toString()];
 	const Username = ["@Username", value.username.toString()];
+	const avatar = ["@avatar", value.avatar.toString()]
+  	const email = ["@email", value.email.toString()]
 	try {
-		await AsyncStorage.multiSet([access_token, UserId, Username]);
+		await AsyncStorage.multiSet([access_token, UserId, Username, avatar, email]);
 		// await AsyncStorage.setItem("@access_token", value.access_token);
 		// await AsyncStorage.setItem("@UserId", value.id);
 		return true;
@@ -81,12 +83,13 @@ export function inputLogin(input) {
 export function getUserDetails(access_token) {
 	return (dispatch) => {
 		axios({
-			method: "GEt",
+			method: "GET",
 			url: '/user',
 			headers: {access_token},
 		})
 			.then(({ data }) => {
 				// console.log(data)
+				dispatch({type: "SET_AVATAR", payload: data.avatar})
 				dispatch({type : 'SET_USERWALLET' , payload : data.wallet})
 			})
 			.catch((err) => console.log(err));

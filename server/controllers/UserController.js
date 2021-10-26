@@ -12,7 +12,7 @@ class UserController {
                 username,
                 email,
                 password,
-                avatar: `https://avatars.dicebear.com/api/bottts/anon-${random}.svg`,
+                avatar: `https://robohash.org/anon-${random}`,
                 wallet: 0
             })
             res.status(201).json({

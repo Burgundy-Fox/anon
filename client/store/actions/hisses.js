@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// axios.defaults.baseURL = "http://192.168.68.100:4000";
+// const baseURL = "http://192.168.18.2:4000";
 
 export function getAllHiss(access_token) {
     return (dispatch) => {
@@ -59,7 +59,7 @@ export function destroyHiss(access_token, id) {
     return (dispatch) => {
         return axios({
             method: "DELETE",
-            url: `/hisses/${id}`,
+            url: `${baseURL}/hisses/${id}`,
             headers: { access_token },
         })
             .then((_) => {
