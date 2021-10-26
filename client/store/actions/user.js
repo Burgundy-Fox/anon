@@ -1,7 +1,7 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-axios.defaults.baseURL = "http://192.168.68.100:4000";
+axios.defaults.baseURL = "http://192.168.68.102:4000";
 import { auth } from '../../firebase/firebase'
 
 export function inputRegister(input) {
@@ -56,7 +56,6 @@ const storeData = async (value) => {
 
 export function inputLogin(input) {
 	return (dispatch) => {
-		// console.log(input);
 		return axios({
 			method: "POST",
 			url: `/user/login`,
@@ -66,7 +65,7 @@ export function inputLogin(input) {
 				// console.log(data)
 				auth.signInWithEmailAndPassword(data.email, input.password)
 					.then((userCredential) => {
-						console.log(userCredential)
+						// console.log(userCredential)
 					})
 					.catch((error) => {
 						console.log(error, 'error inputlogin')
