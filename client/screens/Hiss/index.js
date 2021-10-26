@@ -1,31 +1,41 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { editHiss, createHiss, getAllHiss } from "../../store/actions/hisses";
 
-axios.defaults.baseURL = "http://192.168.68.100:4000";
 
-export default function Hiss({ navigation }) {
+export default function Hiss({ navigation, route }) {
+	const baseUrl = "http://192.168.68.102:4000";
+	const { access_token } = useSelector(state => state.usersReducer)
 	const [image, setImage] = useState(null);
-	const [content, setContent] = useState("")
+	let [content, setContent] = useState("")
+	let [initalContent, setInitContent] = useState("")
+	const dispatch = useDispatch()
+
+	if (route.params && route.params.from === 'MyAccount') {
+		const { hissId } = route.params 
+		axios({
+			method: "GET",
+			url: `${baseUrl}/hisses/${hissId}`,
+			headers: { access_token },
+		})
+			.then(({ data }) => {
+				setInitContent(data.content);
+			})
+			.catch((err) => console.log(err));
+	}
 
 	async function postHiss(hissData) {
 		try {
 			let token = await AsyncStorage.getItem("@access_token")
-			return axios({
-				method: "POST",
-				url: `/hisses`,
-				headers: {
-					"Content-Type": "multipart/form-data",
-					access_token: token
-				},
-				data: hissData
-			})
+			return dispatch(createHiss(hissData, token))
 				.then(({ data }) => {
-					console.log(data)
+					dispatch(getAllHiss(token))
 					return true
 				})
 				.catch(err => {
@@ -40,34 +50,53 @@ export default function Hiss({ navigation }) {
 	}
 
 	function handleHiss() {
-		if (!content || (!image && !content)) {
-			Alert.alert('Please make a "hiss" first')
-		} else {
-			const formData = new FormData()
-
-			image ? formData.append('image', {
-				name: 'testImage',
-				uri: image,
-				type: 'image/jpg'
-			}) : null
-
-			content ? formData.append('content', content) : null
-			console.log(formData)
-			postHiss(formData)
+		if (route.params && route.params.from === 'MyAccount') {
+			dispatch(editHiss({ hissId: route.params.hissId, content, access_token }))
 				.then((result) => {
 					if (result) {
-						Alert.alert('Hiss Success', null, 
+						Alert.alert('Edit Success', null,
 							[
 								{
 									text: "Done",
-									onPress: () => navigation.replace("MainApp"),
+									onPress: () => navigation.navigate("MyAccount"),
 								}
 							]
 						);
 					} else {
-						Alert.alert('Hiss Failed')
+						Alert.alert('Edit Failed')
 					}
 				})
+		} else {
+			if (!content || (!image && !content)) {
+				Alert.alert('Please make a "hiss" first')
+			} else {
+				const formData = new FormData()
+
+				image ? formData.append('image', {
+					name: 'testImage',
+					uri: image,
+					type: 'image/jpg'
+				}) : null
+
+				content ? formData.append('content', content) : null
+
+				postHiss(formData)
+					.then((result) => {
+						// console.log(result);
+						if (result) {
+							Alert.alert('Hiss Success', null,
+								[
+									{
+										text: "Done",
+										onPress: () => navigation.navigate("MainApp"),
+									}
+								]
+							);
+						} else {
+							Alert.alert('Hiss Failed')
+						}
+					})
+			}
 		}
 	}
 
@@ -101,16 +130,29 @@ export default function Hiss({ navigation }) {
 				textAlignVertical={"top"}
 				placeholder={"What's going on?"}
 				onChangeText={setContent}
+				defaultValue={initalContent}
 			/>
 			<View style={{ flexDirection: "row", justifyContent: 'space-between', margin: 20 }}>
 				<View style={{ flexDirection: "row", alignItems: 'center' }}>
-					<TouchableOpacity onPress={() => uploadImage()} style={{ borderRadius: 99, borderWidth: 1, padding: 10 }}>
-						<MaterialCommunityIcons
-							name="image-plus"
-							size={24}
-							color="black"
-						/>
-					</TouchableOpacity>
+					{
+						route.params && route.params.from == 'MyAccount' ?
+							<View>
+								<MaterialCommunityIcons
+									name="image-plus"
+									size={24}
+									color="grey"
+								/>
+							</View>
+							:
+							<TouchableOpacity onPress={() => uploadImage()} style={{ borderRadius: 99, borderWidth: 1, padding: 10 }}>
+								<MaterialCommunityIcons
+									name="image-plus"
+									size={24}
+									color="black"
+								/>
+							</TouchableOpacity> 
+					}
+
 					{
 						image ?
 							<View style={{ flexDirection: "row", alignItems: 'center' }}>

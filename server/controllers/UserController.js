@@ -3,10 +3,8 @@ const { passwordDecoder, tokenGenerator } = require('../helpers/index')
 
 class UserController {
     static async register(req, res, next) {
-        const { email, username, password } = req.body
-   
         const random = Math.floor(Math.random() * 10000)
-   
+        const { email, username, password } = req.body
         try {
             const user = await User.create({
                 username,
@@ -58,56 +56,67 @@ class UserController {
         }
     }
 
-    static async updateAvatar (req, res, next) {
-        const id = +req.params.id
-        const avatar = req.body.avatar
-        
-        try {
-            const user = await User.update({ avatar }, {
-                where: {
-                    id: id
-                }, 
-                returning: true
-            })
+    static updateAvatar(req, res) {
+        const random = Math.floor(Math.random() * 10000)
+        const avatar = `https://robohash.org/anon-${random}`
+        const price = 5000
 
-            if (user[0] === 0) throw { name: 'update failed' }
-            res.status(200).json({
-                id: user[1][0].id,
-                username: user[1][0].username,
-                email: user[1][0].email,
-                avatar: user[1][0].avatar,
-                wallet: user[1][0].wallet
-            })
-            
-        } catch (error) {
-            /* istanbul ignore next */
+        User.findOne({
+            where: {
+                id: req.currentUser.id
+            }
+        })
+            .then(({ wallet }) => {
+                if (wallet < 5000) {
+                    res.status(400).json({ message: 'Please Top up First' })
+                } else {
+                    User.decrement('wallet', {
+                        by: price,
+                        where: {
+                            id: req.currentUser.id
+                        }
+                    })
+                        .then((result) => {
+                            User.update({ avatar }, {
+                                where: {
+                                    id: req.currentUser.id
+                                },
+                                returning: true
+                            })
+                                .then((user) => {
+                                    res.status(200).json({
+                                        id: user[1][0].id,
+                                        username: user[1][0].username,
+                                        email: user[1][0].email,
+                                        avatar: user[1][0].avatar,
+                                        wallet: user[1][0].wallet
+                                    })
+                                }).catch((err) => {
+                                    throw err
+                                });
+                        }).catch((err) => {
+                            throw err
+                        });
+                }
+            }).catch((err) => {
+                res.status(500).json(err)
+            });
 
-           next(error)
-        }
+
     }
 
-    static async buyItem(req, res, next) {
-        const id =  +req.params.id
-        const price = +req.body.price
-
-        try {
-            const user = await User.decrement('wallet', { 
-                by: price,
-                where: {
-                    id
-                }
-            })
-            if (user[0][1] === 0) throw { name: 'authentication error' }
-            res.status(200).json({
-                id: user[0][0][0].id,
-                username: user[0][0][0].username,
-                email: user[0][0][0].email,
-                wallet: user[0][0][0].wallet
-            })
-        } catch (error) {
-            /* istanbul ignore next */
-            next(error)
-        }
+    static getUserDetails(req, res, next) {
+        User.findOne({
+            where: {
+                id: req.currentUser.id
+            },
+            attributes: { exclude: ['password'] }
+        })
+            .then((result) => {
+                res.status(200).json(result)
+            }).catch((err) => {
+                res.status(500).json(err)
+            });
     }
 }
 

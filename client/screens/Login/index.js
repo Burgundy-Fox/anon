@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import {
   View,
@@ -16,45 +15,24 @@ import { inputLogin } from "../../store/actions/user";
 export default function Login({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useState("");
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = async () => {
-    try {
-      const value = await AsyncStorage.getItem("@access_token");
-      //   console.log(value);
-      if (value !== null) {
-        // value previously stored
-        setToken(value);
-        navigation.replace("MainApp");
-      }
-    } catch (e) {
-      // error reading value
-    }
-  };
 
   function handleLogin() {
     if (!username) {
       Alert.alert("Please fill Username");
-    }
-
-    if (!password) {
+    }else if (!password) {
       Alert.alert("Please fill Password");
+    }else{
+      dispatch(inputLogin({ username, password })).then((value) => {
+        // console.log(value)
+        if (value) {
+          navigation.replace("MainApp");
+        } else {
+          Alert.alert("Failed Login!");
+        }
+      });
     }
-
-    dispatch(inputLogin({ username, password })).then((value) => {
-      console.log(value)
-      if (value) {
-        getData();
-      } else {
-        Alert.alert("Failed Login!");
-      }
-    });
   }
 
   return (

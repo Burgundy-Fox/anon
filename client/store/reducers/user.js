@@ -2,7 +2,9 @@ const initialState = {
   isRegister: false,
   isLogin: false,
   access_token: null,
-  avatar: ''
+  username : '',
+  wallet : 0,
+  avatar: "https://via.placeholder.com/150/54176f",
 };
 
 export default function usersReducer(state = initialState, action) {
@@ -24,6 +26,18 @@ export default function usersReducer(state = initialState, action) {
         ...state,
         access_token: action.payload,
       };
+    }
+    case "SET_USERNAME": {
+      return {
+        ...state,
+        username: action.payload,
+      };
+    }
+    case "SET_USERWALLET": {
+      return {
+        ...state,
+        wallet: action.payload
+      }
     }
     case "SET_AVATAR": {
       return {

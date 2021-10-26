@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasMany(models.Hiss, { foreignKey: "UserId" });
       User.hasMany(models.Transaction, { foreignKey: "UserId" });
+      User.hasMany(models.Like, { foreignKey: "UserId" });
     }
   }
   User.init(
@@ -53,7 +54,11 @@ module.exports = (sequelize, DataTypes) => {
       wallet: {
         type: DataTypes.INTEGER,
         validate: {
-          min: 0,
+          isGreaterThan0(value) {
+            if (value < 0) {
+              throw new Error("quantity can't be negative.");
+            }
+          }
         },
       },
     },
