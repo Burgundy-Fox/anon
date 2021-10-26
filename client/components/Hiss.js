@@ -1,29 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-    View,
-    Text,
-    FlatList,
-    Image,
-    StyleSheet,
-    TouchableOpacity,
-} from 'react-native'
-import { SvgUri } from 'react-native-svg'
-import { FontAwesome } from '@expo/vector-icons'
-import { AntDesign } from '@expo/vector-icons'
-import { destroyHiss } from '../store/actions/hisses'
-import { ListItem } from 'react-native-elements/dist/list/ListItem'
-import { EvilIcons } from '@expo/vector-icons'
-import { auth } from '../firebase/firebase'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+	View,
+	Text,
+	FlatList,
+	Image,
+	StyleSheet,
+	TouchableOpacity,
+} from "react-native";
+
+import { FontAwesome, EvilIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+import { destroyHiss, getAllHiss } from "../store/actions/hisses";
+// import { ListItem } from "react-native-elements/dist/list/ListItem";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios'
 
 export default function Hiss({ navigation, item, route }) {
-    const access_token = useSelector((state) => state.usersReducer.access_token)
-	// const currentEmail = auth.currentUser.email
+	const access_token = useSelector((state) => state.usersReducer.access_token)
+	const baseUrl = "http://192.168.68.102:4000";
 	const [avatar, setAvatar] = useState('')
 	const [id, setId] = useState('')
 	const [email, setEmail] = useState('')
-    const dispatch = useDispatch()
+	const dispatch = useDispatch()
 
 	async function loadCurrentUser() {
 		try {
@@ -36,66 +35,80 @@ export default function Hiss({ navigation, item, route }) {
 			// dispatch({type: 'SET AVATAR', payload: ava})
 		} catch (error) {
 			console.log(error)
-		}	
+		}
 	}
 
 	loadCurrentUser()
 
-    function handleReply() {
-        navigation.navigate('Reply')
-    }
+	function handleReply() {
+		navigation.navigate("Reply");
+	}
 
-    function handleLike() {
-        console.log('like bertambah 1')
-    }
+	function handleLike(hissId) {
+		axios({
+			method: 'post',
+			url: `${baseUrl}/like/${hissId}`,
+			headers: {
+				access_token
+			}
+		})
+			.then((result) => {
+				dispatch(getAllHiss(access_token))
+				console.log("like bertambah 1");
+			}).catch((err) => {
+				console.log(err);
+			});
+	}
 
-    function handleEdit(access_token, id) {
-        console.log(access_token, id)
-    }
+	function handleEdit(access_token, hissId) {
+		// console.log(access_token, id);
+		navigation.navigate("Hiss", { hissId, from: route });
+	}
 
-    function handleDelete(access_token, id) {
-        dispatch(destroyHiss(access_token, id))
-    }
+	function handleDelete(access_token, id) {
+		dispatch(destroyHiss(access_token, id))
+	}
 
 	function handleChat(user) {
 		// console.log(user)
-		navigation.navigate( 'Chat', {
+		navigation.navigate('Chat', {
 			user2: {
-                _id: user.email,
-                avatar: user.avatar,
+				_id: user.email,
+				avatar: user.avatar,
 				username: `Anon${user.id}`
-            },
+			},
 			user: {
-                _id: email,
-                avatar: avatar,
+				_id: email,
+				avatar: avatar,
 				username: `Anon${id}`
-            },
+			},
 		})
 	}
 
-    //   return (
-    //     <View>
-    //       <Text>Loading...</Text>
-    //     </View>
-    //   );
+	//   return (
+	//     <View>
+	//       <Text>Loading...</Text>
+	//     </View>
+	//   );
 	if (email) {
 		return (
 			<View
 				key={item.id}
 				style={{
-					marginBottom: 5,
-					borderBottomColor: 'black',
-					borderBottomWidth: 1,
+					marginBottom: 10,
+					paddingVertical: 5,
+					borderBottomColor: 'silver',
+					borderBottomWidth: 0.5,
 					flexDirection: 'row',
 				}}
 			>
 				<Image source={{ uri: item.User.avatar }} style={styles.img} />
-	
-				<View style={{ marginLeft: 8 }}>
+
+				<View style={{ marginLeft: 10 }}>
 					<Text style={{ marginVertical: 5, fontSize: 16 }}>
 						{`Anon${item.User.id}`}
 					</Text>
-	
+
 					{item.image_url ? (
 						<Image
 							source={{ uri: item.image_url }}
@@ -103,8 +116,8 @@ export default function Hiss({ navigation, item, route }) {
 							key={item.id}
 						/>
 					) : null}
-	
-					<Text style={{ fontSize: 18 }}>{item.content}</Text>
+
+					<Text style={{ fontSize: 18, marginVertical: 7}}>{item.content}</Text>
 					<View
 						style={{
 							marginVertical: 5,
@@ -113,36 +126,38 @@ export default function Hiss({ navigation, item, route }) {
 					>
 						{route === 'Home' ? (
 							<>
-								<TouchableOpacity onPress={() => handleReply()}>
+								<TouchableOpacity style={{ marginLeft: 110, flexDirection: 'row' }} onPress={() => handleReply()}>
 									<FontAwesome
 										name="comment-o"
 										size={18}
 										color="black"
-										style={{ marginLeft: 110 }}
 									/>
 								</TouchableOpacity>
-								<TouchableOpacity onPress={() => handleLike()}>
+								<TouchableOpacity style={{ marginLeft: 50, flexDirection: 'row' }} onPress={() => handleLike(item.id)}>
 									<AntDesign
-										name="hearto"
+										name= { item.Likes.filter(el => el.UserId == id).length ? 'heart' : 'hearto'}
 										size={18}
-										color="black"
-										style={{ marginLeft: 50 }}
+										color= { item.Likes.filter(el => el.UserId == id).length ? 'red' : 'black'}
 									/>
+									<Text>{" "}{item.Likes.length || "" }</Text>
 								</TouchableOpacity>
-								{item.User.email !== email ? <TouchableOpacity onPress={() => handleChat(item.User)}>
-									<EvilIcons
-										name="envelope"
-										size={24}
-										color="black"
-										style={{ marginLeft: 50 }}
-									/>
-								</TouchableOpacity>
-								:
-								null}
+								{
+									item.User.email !== email ?
+										<TouchableOpacity style={{marginLeft: 50}} onPress={() => handleChat(item.User)}>
+											<EvilIcons
+												name="envelope"
+												size={24}
+												color="black"
+											/>
+										</TouchableOpacity>
+										:
+										null
+								}
 							</>
 						) : (
-							<>
+							<View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
 								<TouchableOpacity
+								style= {{ marginLeft: 50}}
 									onPress={() =>
 										handleEdit(access_token, item.id)
 									}
@@ -151,10 +166,10 @@ export default function Hiss({ navigation, item, route }) {
 										name="edit"
 										size={24}
 										color="black"
-										style={{ marginLeft: 50 }}
 									/>
 								</TouchableOpacity>
 								<TouchableOpacity
+								style= {{ marginLeft: 50}}
 									onPress={() =>
 										handleDelete(access_token, item.id)
 									}
@@ -163,10 +178,9 @@ export default function Hiss({ navigation, item, route }) {
 										name="delete"
 										size={18}
 										color="black"
-										style={{ marginLeft: 50 }}
 									/>
 								</TouchableOpacity>
-							</>
+							</View>
 						)}
 					</View>
 				</View>
@@ -177,20 +191,20 @@ export default function Hiss({ navigation, item, route }) {
 			<Text>Loading....</Text>
 		)
 	}
-    
+
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        justifyContent: 'center',
-        padding: 10,
-    },
-    img: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        borderWidth: 1,
-    },
+	container: {
+		flex: 1,
+		backgroundColor: '#fff',
+		justifyContent: 'center',
+		padding: 10,
+	},
+	img: {
+		width: 50,
+		height: 50,
+		borderRadius: 25,
+		borderWidth: 1,
+	},
 })

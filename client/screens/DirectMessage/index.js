@@ -30,7 +30,7 @@ const DirectMessage = ({ navigation, route }) => {
                 return (
                     <View
                         style={{
-                            marginRight: 30,
+                            marginLeft: 10,
                         }}
                     >
                         <Avatar
@@ -111,39 +111,43 @@ const DirectMessage = ({ navigation, route }) => {
     const renderItem = ({ item }) => (
         <TouchableOpacity onPress={() => handleOnPress(item)}>
             <View style={styles.container}>
-            <View>
-                {item.user2._id !== currentId ? 
-                <>
-                <Image style={styles.img} source={{ uri: item.user2.avatar }} />
-                    <Text
-                        style={{
-                            marginVertical: 5,
-                            fontSize: 16,
-                            fontWeight: 'bold',
-                        }}
-                    >
-                        {item.user2.username}
-                    </Text> 
-                    </>
+                {item.user2._id !== currentId ?
+                    <View style={{flexDirection : 'row', alignItems: 'center'}}>
+                        <Image style={styles.img} source={{ uri: item.user2.avatar }} />
+                        <View style={{marginLeft : 15, height: 60, justifyContent: 'space-between', paddingVertical : 5 }}>
+                            <Text
+                                style={{
+                                    fontSize: 16,
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                {item.user2.username}
+                            </Text>
+                            <Text style={{fontSize : 15}}>{`·>  ${item.text}`}</Text>
+                        </View>
+                    </View>
+
                     :
-                    <>
-                    <Image style={styles.img} source={{ uri: item.user.avatar }} />
-                    <Text
-                        style={{
-                            marginVertical: 5,
-                            fontSize: 16,
-                            fontWeight: 'bold',
-                        }}
-                    >
-                        {item.user.username}
-                    </Text>  
-                    </>}     
+                    <View style={{flexDirection : 'row', alignItems: 'center'}}>
+                        <Image style={styles.img} source={{ uri: item.user.avatar }} />
+                        <View style={{marginLeft : 15, height: 60, justifyContent: 'space-between', paddingVertical : 5 }}>
+                            <Text
+                                style={{
+                                    fontSize: 16,
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                {item.user.username}
+                            </Text>
+                            <Text style={{fontSize : 15}}>{`·>  ${item.text}`}</Text>
+                        </View>
+                    </View>
+                    }
                 <View>
                     {/* {console.log(item.user2._id)}
                     {console.log(currentId, 'ini currentId')} */}
                 </View>
-                    <Text>{`·>  ${item.text}`}</Text>
-                </View>
+                
             </View>
         </TouchableOpacity>
     )
@@ -190,8 +194,12 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         padding: 10,
+        paddingLeft: 15,
         borderWidth: 1,
-        flexDirection:'row',
+        borderRadius: 50,
+        marginVertical: 10,
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     img: {
         width: 50,

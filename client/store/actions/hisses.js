@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "http://192.168.18.2:4000";
+const baseURL = "http://192.168.68.102:4000";
 
 export function getAllHiss(access_token) {
     return (dispatch) => {
@@ -16,34 +16,55 @@ export function getAllHiss(access_token) {
     };
 }
 
-export function createHiss(access_token, input) {
+export function createHiss(hissData, token) {
     return (dispatch) => {
-        console.log(access_token, input);
-        axios({
+        return axios({
             method: "POST",
             url: `${baseURL}/hisses`,
-            headers: { access_token },
-            data: {
-                content: input,
+            headers: {
+                "Content-Type": "multipart/form-data",
+                access_token: token
             },
+            data: hissData
         })
-            .then((_) => {
-                dispatch(getAllHiss(access_token));
-            })
-            .catch((err) => console.log(err));
+    };
+}
+
+export function editHiss(hissData) {
+    return (dispatch) => {
+			return axios({
+				method: "PUT",
+				url: `${baseURL}/hisses/${hissData.hissId}`,
+				data: {
+					content: hissData.content
+				},
+				headers: { access_token: hissData.access_token },
+			})
+				.then(({ data }) => {
+                    if(data){
+                        dispatch(getAllHiss(hissData.access_token));
+                        return true
+                    }else{
+                        return false
+                    }	
+				})
+				.catch((err) => {
+                    console.log(err)
+                    return false
+                });
     };
 }
 
 export function destroyHiss(access_token, id) {
     return (dispatch) => {
-        axios({
+        return axios({
             method: "DELETE",
             url: `${baseURL}/hisses/${id}`,
             headers: { access_token },
         })
-            .then((_) => {
+            .then(() => {
                 dispatch(getAllHiss(access_token));
             })
-            .catch((err) => console.log(err));
+            .catch((err) => console.log(err, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"));
     };
 }

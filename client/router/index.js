@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -13,6 +13,8 @@ import {
 	MyAccount,
 	Reply,
 	Hiss,
+	TopUp,
+	Webview
 } from "../screens";
 
 import { Entypo } from "@expo/vector-icons";
@@ -26,21 +28,22 @@ import { postHiss } from "../store/actions/hisses";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function MainApp({ navigation }) {
-	const [avatar, setAvatar] = useState('')
-	const dispatch = useDispatch()
-	// const avatar = useSelector(state => state.usersReducer.avatar)
-	// co
-	async function loadAvatar() {
-		try {
-			let ava = await AsyncStorage.getItem('@avatar')
-			setAvatar(ava)
-			// dispatch({type: 'SET AVATAR', payload: ava})
-		} catch (error) {
-			console.log(error)
-		}	
-	}
+	const [avatar, setAvatar] = useState("https://via.placeholder.com/150/54176f")
+	const {avatar : ava} = useSelector(state => state.usersReducer)
 
-	loadAvatar()
+	useEffect(() => {
+		setAvatar(ava)
+	}, [ava])
+
+	// const loadAvatar = async () => {
+	// 	try {
+	// 		let ava = await AsyncStorage.getItem('@avatar')
+	// 		setAvatar(ava)
+	// 		// dispatch({type: 'SET AVATAR', payload: ava})
+	// 	} catch (error) {
+	// 		console.log(error)
+	// 	}	
+	// }
 
 	const Tab = createBottomTabNavigator();
 
@@ -229,6 +232,14 @@ export default function Router() {
 				name="MainApp"
 				component={MainApp}
 				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name="TopUpWallet"
+				component={TopUp}
+			/>
+			<Stack.Screen
+				name="Webview"
+				component={Webview}
 			/>
 		</Stack.Navigator>
 	);
