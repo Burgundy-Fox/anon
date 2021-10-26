@@ -44,7 +44,9 @@ Response:
 
 ```json
 {
-    "errors": "Internal Server Error"
+    "error": [
+      "Internal Server Error"
+      ]
 }
 ```
 
@@ -54,7 +56,9 @@ Response:
 
 ```json
 {
-    "errors": "Validation Error"
+    "error": [
+      "Validation Error"
+      ]
 }
 ```
 
@@ -90,17 +94,19 @@ Response:
     "username": "blablabla",
     "email": "user1@mail.com",
     "avatar": "https://avatars.dicebear.com/api/bottts/anon-123.svg",
+    "wallet": 1000,
     "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjMxMjUzMjYwfQ.jDvducDr5A43oP5uuT4p-ZGRJpl8qhftkUefXogFxJ4"
 }
 ```
 
 -   status: 500
 -   body:
-    ​
 
 ```json
 {
-    "errors": "Internal Server Error"
+    "error": [
+      "Internal Server Error"
+      ]
 }
 ```
 
@@ -110,7 +116,21 @@ Response:
 
 ```json
 {
-    "errors": "Validation Error"
+    "error": [
+      "Email or Password Incorrect"
+      ]
+}
+```
+
+-   status: 400
+-   body:
+    ​
+
+```json
+{
+    "error": [
+      "please check your input, make sure you have inputted ]them all"
+      
 }
 ```
 
@@ -147,17 +167,21 @@ Response:
 
 ```json
 {
-    "errors": "Internal Server Error"
+    "error": [
+      "Internal Server Error"
+      ]
 }
 ```
 
--   status: 400
+-   status: 404
 -   body:
     ​
 
 ```json
 {
-    "errors": "Validation Error"
+    "error": [
+      "failed to update, missing the inputted body"
+      ]
 }
 ```
 
@@ -197,7 +221,9 @@ Response:
 
 ```json
 {
-    "errors": "Internal Server Error"
+    "error": [
+      "Internal Server Error"
+      ]
 }
 ```
 
@@ -207,7 +233,9 @@ Response:
 
 ```json
 {
-    "errors": "Validation Error"
+    "error": [
+      "please check your input, make sure you have inputted them all"
+      ]
 }
 ```
 
@@ -265,7 +293,9 @@ Response:
 
 ```json
 {
-    "errors": "Internal Server Error"
+    "error": [
+      "Internal Server Error"
+      ]
 }
 ```
 
@@ -275,7 +305,9 @@ Response:
 
 ```json
 {
-    "errors": "Validation Error"
+    "error": [
+      "Validation Error"
+      ]
 }
 ```
 
@@ -316,7 +348,9 @@ Response:
 
 ```json
 {
-    "errors": "Internal Server Error"
+    "error": [
+      "Internal Server Error"
+      ]
 }
 ```
 
@@ -326,7 +360,9 @@ Response:
 
 ```json
 {
-    "errors": "Validation Error"
+    "error": [
+      "Validation Error"
+      ]
 }
 ```
 
@@ -350,7 +386,9 @@ Response:
 
 ```json
 {
-    "errors": "Internal Server Error"
+    "error": [
+      "Internal Server Error"
+      ]
 }
 ```
 
@@ -360,7 +398,9 @@ Response:
 
 ```json
 {
-    "errors": "Validation Error"
+    "error": [
+      "Validation Error"
+      ]
 }
 ```
 
@@ -417,11 +457,20 @@ Membuat token pembayaran midtrans
     -   **Code:** 401 <br />
         ```json
         {
-        	"errors": ["Missing JWT"]
+        	"error": [
+            "Missing JWT"
+            ]
         	// or JWT Invalid
         }
         ```
     -   **Code:** 500 INTERNAL SERVER ERROR <br />
+     ```json
+        {
+        	"error": [
+            "internal server error"
+            ]
+        }
+        ```
 
 ---
 
@@ -450,6 +499,7 @@ Menambahkan data transaksi di database
     {
     	"order_id": "<orderid midtrans>",
     	"transaction_status": "<status transaction>",
+    	"gross_amount": "<status amount>",
     }
     ```
 
@@ -460,13 +510,7 @@ Menambahkan data transaksi di database
 
         ```json
         {
-            "id": 13,
-            "order_id": "<orderid midtrans>",
-            "status": "pending",
-            "userId": 1,
-            "recipeId": 1,
-            "updatedAt": "2021-09-10T07:01:47.870Z",
-            "createdAt": "2021-09-10T07:01:47.870Z"
+          "message": "Transaction succesfully updated"
         }
         ```
 
@@ -474,8 +518,14 @@ Menambahkan data transaksi di database
     -   **Code:** 401 <br />
         ```json
         {
-        	"errors": ["Missing JWT"]
+        	"error": ["Missing JWT"]
         	// or JWT Invalid
+        }
+        ```
+    -   **Code:** 400 <br />
+        ```json
+        {
+        	"error": ["please check your input, make sure you have inputted them all"]
         }
         ```
     -   **Code:** 500 INTERNAL SERVER ERROR <br />
@@ -525,7 +575,7 @@ Menampilakan data transaction user
     -   **Code:** 401 <br />
         ```json
         {
-        	"errors": ["Missing JWT"]
+        	"error": ["Missing JWT"]
         	// or JWT Invalid
         }
         ```
@@ -543,8 +593,8 @@ Mengupdate status transaction
     `/transaction/:transactionId`
 
 -   **Method:**
-
     `patch`
+
 -   **Url Params:** `transactionId=number`
 
 -   **Headers:**
@@ -578,20 +628,20 @@ Mengupdate status transaction
     -   **Code:** 404 <br />
         ```json
         {
-            "errors": ["Transaction Not Found"]
+            "error": ["Transaction Not Found"]
         }
         ```
     -   **Code:** 403 <br />
         ```json
         {
-            "errors": ["Access invalid"]
+            "error": ["Access invalid"]
         }
         ```
     -   **Code:** 401 <br />
 
         ```json
         {
-        	"errors": ["Missing JWT"]
+        	"error": ["Missing JWT"]
         	// or JWT Invalid
         }
         ```

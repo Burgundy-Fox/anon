@@ -5,7 +5,7 @@ let imagekit = new ImageKit({
   privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
   urlEndpoint: process.env.IMAGEKIT_URL,
 });
-
+   /* istanbul ignore next */
 function uploadImage(req, res, next) {
   if (!req.file) {
     next();

@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const { clearTheWords } = require('kasar')
 module.exports = (sequelize, DataTypes) => {
   class Hiss extends Model {
     /**
@@ -43,5 +44,8 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Hiss",
     }
   );
+  Hiss.beforeCreate((instances, options) => {
+    instances.content = clearTheWords(instances.content)
+  });
   return Hiss;
 };

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "http://192.168.18.2:4000";
+const baseURL = "http://192.168.43.45:4000";
 
 export function getAllHiss(access_token) {
     return (dispatch) => {

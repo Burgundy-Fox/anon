@@ -18,7 +18,7 @@ import axios from 'axios'
 
 export default function Hiss({ navigation, item, route }) {
 	const access_token = useSelector((state) => state.usersReducer.access_token)
-	const baseUrl = "http://192.168.18.2:4000";
+	const baseUrl = "http://192.168.43.45:4000";
 	const [avatar, setAvatar] = useState('')
 	const [id, setId] = useState('')
 	const [email, setEmail] = useState('')
@@ -48,6 +48,7 @@ export default function Hiss({ navigation, item, route }) {
 	}
 
 	function handleLike(hissId) {
+    console.log(hissId);
 		axios({
 			method: 'post',
 			url: `${baseUrl}/like/${hissId}`,
@@ -122,7 +123,7 @@ export default function Hiss({ navigation, item, route }) {
 							flexDirection: 'row',
 						}}
 					>
-						{route === 'Home' || route === 'Mention' ? (
+						{route === 'Home' || route === 'Mention' || route === 'Most Popular' ? (
 							<>
 								<TouchableOpacity style={{ marginLeft: 110, flexDirection: 'row' }} onPress={() => handleReply(item.User.id)}>
 									<FontAwesome

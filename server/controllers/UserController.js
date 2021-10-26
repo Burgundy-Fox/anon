@@ -2,7 +2,7 @@ const { User } = require('../models')
 const { passwordDecoder, tokenGenerator } = require('../helpers/index')
 
 class UserController {
-    static async register(req, res) {
+    static async register(req, res, next) {
         const random = Math.floor(Math.random() * 10000)
         const { email, username, password } = req.body
         try {
@@ -21,11 +21,11 @@ class UserController {
                 wallet: user.wallet
             })
         } catch (error) {
-            res.status(500).json(error)
+           next(error)
         }
     }
 
-    static async login(req, res) {
+    static async login(req, res, next) {
         const { username, password } = req.body
         try {
             const user = await User.findOne({
@@ -33,10 +33,10 @@ class UserController {
                     username,
                 },
             })
-            if (!user) throw { error: 'User doesnt exist!' }
+            if (!user) throw ({ name: 'authentication error' })
             const isCorrect = passwordDecoder(password, user.password)
 
-            if (!isCorrect) throw { error: 'Wrong Password!' }
+            if (!isCorrect) throw ({ name: 'login failed' })
             const access_token = tokenGenerator({
                 id: user.id,
                 username: user.username,
@@ -51,7 +51,8 @@ class UserController {
                 access_token: access_token,
             })
         } catch (error) {
-            res.status(500).json(error)
+          console.log(error);
+           next(error)
         }
     }
 

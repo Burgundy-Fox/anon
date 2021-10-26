@@ -5,18 +5,17 @@ function authentication(req, res, next) {
   const { access_token } = req.headers;
 
   if (!access_token) {
-    return res.status(401).json("Access token missing");
+    throw ({ name: 'JsonWebTokenError' })
   }
 
   try {
     const userDecoded = tokenDecoder(access_token);
 
-    console.log(userDecoded, "auth");
-
     User.findByPk(userDecoded.id)
       .then((user) => {
         if (!user) {
-          return res.status(401), json("Unauthenticated");
+          /* istanbul ignore next */
+          throw ({ name: "authentication error" })
         } else {
           req.currentUser = {
             id: user.id,
@@ -24,28 +23,31 @@ function authentication(req, res, next) {
           next();
         }
       })
-      .catch((error) => res.status(500).json(error));
+      .catch((error) => {
+        /* istanbul ignore next */
+        next(error)
+      });
   } catch (error) {
-    return res.status(500).json(error);
+    return next(error);
   }
 }
 
 function authorization(req, res, next) {
-  const { id } = req.params;
-
-  Hiss.findByPk(id)
+  let id = req.currentUser.id
+  Hiss.findOne({ where: { id: req.params.id } })
     .then((hiss) => {
-      if (!hiss) {
-        return res.status(404).json("Data Not Found");
-      } else {
-        if (hiss.UserId == req.currentUser.id) {
-          next();
+      if (hiss) {
+        if (hiss.UserId == id) {
+          next()
         } else {
-          return res.status(401).json("Unauthorized");
+            /* istanbul ignore next */
+          throw ({ name: "authorization error" })
         }
+      } else {
+        throw ({ name: "not found" })
       }
     })
-    .catch((err) => res.status(500).json(err));
+    .catch((err) => next(err))
 }
 
 module.exports = {

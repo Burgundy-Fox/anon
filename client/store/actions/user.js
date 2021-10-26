@@ -2,7 +2,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getAllHiss } from "./hisses";
 
-const baseURL = "http://192.168.18.2:4000";
+const baseURL = "http://192.168.43.45:4000";
 import { auth } from '../../firebase/firebase'
 
 export function inputRegister(input) {

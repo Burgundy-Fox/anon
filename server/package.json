@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "setup:test": "sequelize-cli db:drop --env test&&sequelize-cli db:create --env test&&sequelize-cli db:migrate --env test",
+    "test": "jest --runInBand --detectOpenHandles --forceExit --coverage"
   },
   "keywords": [],
   "author": "",
@@ -17,11 +18,17 @@
     "google-auth-library": "^7.10.1",
     "imagekit": "^3.2.2",
     "jsonwebtoken": "^8.5.1",
+    "kasar": "^1.0.3",
     "midtrans-client": "^1.2.5",
     "multer": "^1.4.3",
     "pg": "^8.7.1",
     "save": "^2.4.0",
     "sequelize": "^6.7.0",
+    "sequelize-cli": "^6.2.0",
     "socket.io": "^4.3.1"
+  },
+  "devDependencies": {
+    "jest": "^27.3.0",
+    "supertest": "^6.1.6"
   }
 }
