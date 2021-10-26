@@ -18,7 +18,7 @@ import axios from 'axios'
 
 export default function Hiss({ navigation, item, route }) {
 	const access_token = useSelector((state) => state.usersReducer.access_token)
-	const baseUrl = "http://192.168.68.102:4000";
+	const baseUrl = "http://192.168.18.2:4000";
 	const [avatar, setAvatar] = useState('')
 	const [id, setId] = useState('')
 	const [email, setEmail] = useState('')
@@ -40,8 +40,11 @@ export default function Hiss({ navigation, item, route }) {
 
 	loadCurrentUser()
 
-	function handleReply() {
-		navigation.navigate("Reply");
+	function handleReply(id) {
+		// console.log(`Anon${id}`)
+		navigation.navigate("Reply",{
+			username: `@Anon${id}`
+		});
 	}
 
 	function handleLike(hissId) {
@@ -85,11 +88,6 @@ export default function Hiss({ navigation, item, route }) {
 		})
 	}
 
-	//   return (
-	//     <View>
-	//       <Text>Loading...</Text>
-	//     </View>
-	//   );
 	if (email) {
 		return (
 			<View
@@ -124,9 +122,9 @@ export default function Hiss({ navigation, item, route }) {
 							flexDirection: 'row',
 						}}
 					>
-						{route === 'Home' ? (
+						{route === 'Home' || route === 'Mention' ? (
 							<>
-								<TouchableOpacity style={{ marginLeft: 110, flexDirection: 'row' }} onPress={() => handleReply()}>
+								<TouchableOpacity style={{ marginLeft: 110, flexDirection: 'row' }} onPress={() => handleReply(item.User.id)}>
 									<FontAwesome
 										name="comment-o"
 										size={18}

@@ -195,8 +195,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         padding: 10,
         paddingLeft: 15,
-        borderWidth: 1,
-        borderRadius: 50,
         marginVertical: 10,
         flexDirection: 'row',
         alignItems: 'center'
