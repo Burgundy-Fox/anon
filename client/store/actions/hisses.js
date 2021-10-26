@@ -1,12 +1,12 @@
 import axios from "axios";
 
-// const baseURL = "http://192.168.18.2:4000";
+const baseURL = "http://192.168.68.102:4000";
 
 export function getAllHiss(access_token) {
     return (dispatch) => {
         axios({
             method: "GET",
-            url: `/hisses`,
+            url: `${baseURL}/hisses`,
             headers: { access_token },
         })
             .then(({ data }) => {
@@ -20,7 +20,7 @@ export function createHiss(hissData, token) {
     return (dispatch) => {
         return axios({
             method: "POST",
-            url: `/hisses`,
+            url: `${baseURL}/hisses`,
             headers: {
                 "Content-Type": "multipart/form-data",
                 access_token: token
@@ -34,7 +34,7 @@ export function editHiss(hissData) {
     return (dispatch) => {
 			return axios({
 				method: "PUT",
-				url: `/hisses/${hissData.hissId}`,
+				url: `${baseURL}/hisses/${hissData.hissId}`,
 				data: {
 					content: hissData.content
 				},
@@ -62,9 +62,9 @@ export function destroyHiss(access_token, id) {
             url: `${baseURL}/hisses/${id}`,
             headers: { access_token },
         })
-            .then((_) => {
+            .then(() => {
                 dispatch(getAllHiss(access_token));
             })
-            .catch((err) => console.log(err));
+            .catch((err) => console.log(err, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"));
     };
 }

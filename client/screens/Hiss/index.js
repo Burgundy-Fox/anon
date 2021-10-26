@@ -8,9 +8,9 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { editHiss, createHiss, getAllHiss } from "../../store/actions/hisses";
 
-axios.defaults.baseURL = "http://192.168.68.100:4000";
 
 export default function Hiss({ navigation, route }) {
+	const baseUrl = "http://192.168.68.102:4000";
 	const { access_token } = useSelector(state => state.usersReducer)
 	const [image, setImage] = useState(null);
 	let [content, setContent] = useState("")
@@ -21,7 +21,7 @@ export default function Hiss({ navigation, route }) {
 		const { hissId } = route.params 
 		axios({
 			method: "GET",
-			url: `/hisses/${hissId}`,
+			url: `${baseUrl}/hisses/${hissId}`,
 			headers: { access_token },
 		})
 			.then(({ data }) => {

@@ -7,7 +7,6 @@ router.post('/login', UserController.login)
 
 router.use(authentication)
 router.get('/', UserController.getUserDetails)
-router.patch('/:id', UserController.updateAvatar)
-router.patch('/buy-item/:id', UserController.buyItem)
+router.patch('/', UserController.updateAvatar)
 
 module.exports= router

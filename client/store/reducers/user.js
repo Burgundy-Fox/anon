@@ -4,7 +4,7 @@ const initialState = {
   access_token: null,
   username : '',
   wallet : 0,
-  avatar: ''
+  avatar: "https://via.placeholder.com/150/54176f",
 };
 
 export default function usersReducer(state = initialState, action) {

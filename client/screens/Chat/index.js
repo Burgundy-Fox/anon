@@ -26,7 +26,7 @@ const Chat = ({ navigation, route }) => {
                         <Avatar
                             rounded
                             source={{
-                                uri: auth.currentUser?.photoURL,
+                                uri: route.params.user2.avatar,
                             }}
                         ></Avatar>
                     </View>

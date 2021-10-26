@@ -8,7 +8,7 @@ export default function Webview({navigation, route}) {
             onNavigationStateChange={(navState) => {
                 // console.log(navState)
                 if(navState.url.includes('www.google.com')){
-                    navigation.navigate('MyAccount')
+                    navigation.navigate('MyAccount',{ updateDetails : true})
                 }
             }} 
         />

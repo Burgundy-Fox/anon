@@ -10,21 +10,24 @@ import {
 } from "react-native";
 
 import {getAllHiss } from "../../store/actions/hisses";
+import {getUserDetails} from "../../store/actions/user"
 import Hiss from "../../components/Hiss";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Home({ navigation, route }) {
-	const dataHiss = useSelector((state) => state.hissesReducer.dataHiss);
+	const {dataHiss} = useSelector((state) => state.hissesReducer);
 
 	const dispatch = useDispatch();
 
 	async function initialStore(){
+		console.log('initalizing redux');
 		try {
 			let token = await AsyncStorage.getItem('@access_token')
 			dispatch({ type: "SET_ACCESS_TOKEN", payload: token });
 			dispatch(getAllHiss(token));
-			let username = await AsyncStorage.getItem('@Username')
-			dispatch({ type: "SET_USERNAME", payload: username });
+			dispatch(getUserDetails(token));
+			// let username = await AsyncStorage.getItem('@Username')
+			// dispatch({ type: "SET_USERNAME", payload: username });
 		} catch (error) {
 			console.log(error);
 		}

@@ -10,13 +10,15 @@ import {
 import {useSelector} from 'react-redux'
 import axios from 'axios';
 
+
 export default function index({navigation}) {
+    const baseUrl = "http://192.168.68.102:4000";
     const {access_token} = useSelector(state => state.usersReducer)
 
     function midtransWeb(price){
         axios({
             method: 'post',
-            url: '/transaction/midtransToken',
+            url: `${baseUrl}/transaction/midtransToken`,
             data: {
                 price
             },

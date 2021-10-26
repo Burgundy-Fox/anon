@@ -13,22 +13,28 @@ import { Ionicons } from "@expo/vector-icons";
 import { auth } from "../../firebase/firebase";
 import Hiss from "../../components/Hiss";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { getUserDetails } from "../../store/actions/user";
+import { getUserDetails, gachaAvatar } from "../../store/actions/user";
 
 
 export default function MyAccount({ navigation, route }) {
-	const {username, access_token, wallet} = useSelector((state) => state.usersReducer);
+	const {username, access_token, wallet, avatar} = useSelector((state) => state.usersReducer);
 	const {dataHiss} = useSelector((state) => state.hissesReducer);
 	const dispatch = useDispatch()
 
 	const [UserId, setUserId] = useState("");
+
+	if(route.params && route.params.updateDetails){
+		dispatch(getUserDetails(access_token))
+		route.params.updateDetails = false
+		// getData();
+	}
 
 	useEffect(() => {
 		dispatch(getUserDetails(access_token))
 		getData();
 	}, []);
 
-	const getData = async () => {
+	async function getData(){
 		try {
 			const value = await AsyncStorage.getItem("@UserId");
 			if (value !== null) {
@@ -57,23 +63,31 @@ export default function MyAccount({ navigation, route }) {
 		navigation.navigate("TopUpWallet")
 	}
 
+	function handleBuyAvatar(){
+		dispatch(gachaAvatar(access_token))
+	}
+
 	return (
 		<View style={styles.container}>
 			<View style={{flexDirection: "row", marginHorizontal:30}}>
-				<View>
+				<View style={{ alignItems: 'center'}}>
 					<Image
-						source={{ uri: "https://via.placeholder.com/150/54176f" }}
+						source={{ uri: avatar || "https://via.placeholder.com/150/54176f"}}
 						style={{
 							width: 150,
 							height: 150,
 							borderRadius: 150 / 2,
+							marginBottom: 10
 						}}
 					/>
-					<Text style={{ fontSize: 18, color: "#808E9B", marginTop: 10, alignSelf: "center" }}>
-						Change Avatar
-					</Text>
+					<TouchableOpacity style={{width:110, marginTop: 10, borderRadius: 20, borderWidth: 1, alignItems:"center", backgroundColor:"#ffda79"}} 
+						onPress={() => handleBuyAvatar()}>
+						<Text style={{ fontSize: 18, color: 'black' }}>
+							New Avatar
+						</Text>
+					</TouchableOpacity>
 				</View>
-				<View style={{justifyContent: "space-between", marginLeft: 50}}>
+				<View style={{justifyContent: "space-evenly", marginLeft: 50}}>
 					<Text style={{ fontSize: 24}}>{username}</Text>
 					<TouchableOpacity 
 						style={{flexDirection: "row"}}
