@@ -2,7 +2,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getAllHiss } from "./hisses";
 
-const baseURL = "http://192.168.68.102:4000";
+const baseURL = "http://192.168.18.2:4000";
 import { auth } from '../../firebase/firebase'
 
 export function inputRegister(input) {
@@ -68,7 +68,7 @@ export function inputLogin(input) {
 				// console.log(data)
 				auth.signInWithEmailAndPassword(data.email, input.password)
 					.then((userCredential) => {
-						console.log(userCredential)
+						// console.log(userCredential)
 					})
 					.catch((error) => {
 						console.log(error, 'error inputlogin')

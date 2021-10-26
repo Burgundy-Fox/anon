@@ -205,28 +205,6 @@ export default function Router() {
 			<Stack.Screen
 				name="Reply"
 				component={Reply}
-				options={{
-					headerRight: () => (
-						<View style={{ flexDirection: "row" }}>
-							<TouchableOpacity onPress={() => handleImage_url()}>
-								<MaterialCommunityIcons
-									name="image-plus"
-									size={24}
-									color="black"
-									style={{ marginRight: 10 }}
-								/>
-							</TouchableOpacity>
-							<TouchableOpacity onPress={() => handleHiss()}>
-								<FontAwesome
-									name="send"
-									size={24}
-									color="black"
-									style={{ marginRight: 10 }}
-								/>
-							</TouchableOpacity>
-						</View>
-					),
-				}}
 			/>
 			<Stack.Screen
 				name="MainApp"
