@@ -1,6 +1,6 @@
 function errHandler(err, req, res, next) {
   let statusCode
-  console.log(err);
+  // console.log(err);
   let error = []
   switch (err.name) {
     case "JsonWebTokenError":
@@ -11,6 +11,7 @@ function errHandler(err, req, res, next) {
       statusCode = 401
       error.push("User not found")
       break;
+   /* istanbul ignore next */
     case "authorization error":
       statusCode = 401
       error.push("User not authorized to access this")
@@ -18,10 +19,6 @@ function errHandler(err, req, res, next) {
     case "update failed":
       statusCode = 404
       error.push("failed to update, missing the inputted body")
-      break;
-    case "MidtransError":
-      statusCode = 400
-      error.push("Missing JWT")
       break;
     case "Transaction Not Found":
       statusCode = 404
@@ -43,10 +40,12 @@ function errHandler(err, req, res, next) {
       statusCode = 400
       error.push("please check your input, make sure you have inputted them all")
       break;
+   /* istanbul ignore next */
     case "Error":
       statusCode = 400
       error.push("please check your input, make sure you have inputted them all")
       break;
+   /* istanbul ignore next */
     default:
       statusCode = 500
       error.push("internal server error")

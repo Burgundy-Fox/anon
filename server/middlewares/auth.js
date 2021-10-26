@@ -5,7 +5,7 @@ function authentication(req, res, next) {
   const { access_token } = req.headers;
 
   if (!access_token) {
-    throw ({name: 'JsonWebTokenError'})
+    throw ({ name: 'JsonWebTokenError' })
   }
 
   try {
@@ -14,7 +14,8 @@ function authentication(req, res, next) {
     User.findByPk(userDecoded.id)
       .then((user) => {
         if (!user) {
-          throw ({name: "authentication error"})
+          /* istanbul ignore next */
+          throw ({ name: "authentication error" })
         } else {
           req.currentUser = {
             id: user.id,
@@ -22,7 +23,10 @@ function authentication(req, res, next) {
           next();
         }
       })
-      .catch((error) => next(error));
+      .catch((error) => {
+        /* istanbul ignore next */
+        next(error)
+      });
   } catch (error) {
     return next(error);
   }
@@ -32,17 +36,18 @@ function authorization(req, res, next) {
   let id = req.currentUser.id
   Hiss.findOne({ where: { id: req.params.id } })
     .then((hiss) => {
-      if(hiss) {
+      if (hiss) {
         if (hiss.UserId == id) {
           next()
         } else {
-          throw({name: "authorization error"})
+            /* istanbul ignore next */
+          throw ({ name: "authorization error" })
         }
       } else {
-        throw({name: "not found"})
+        throw ({ name: "not found" })
       }
     })
-    .catch((err) => next(err) )
+    .catch((err) => next(err))
 }
 
 module.exports = {

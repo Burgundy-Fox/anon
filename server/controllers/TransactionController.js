@@ -9,7 +9,7 @@ let snap = new midtransClient.Snap({
 });
 
 class Controller {
-   /* istanbul ignore next */
+  /* istanbul ignore next */
   static midtransToken(req, res, next) {
     let order_id = "TOP" + +req.body.price + "TOPBUG" + new Date().toISOString() + "AnonUser" + req.currentUser.id
 
@@ -52,7 +52,8 @@ class Controller {
             .then((result) => {
               res.status(201).json(result)
             }).catch((err) => {
-              throw err
+              /* istanbul ignore next */
+              next(err)
             });
         } else {
           let input = {
@@ -91,6 +92,7 @@ class Controller {
             });
         }
       }).catch((err) => {
+        /* istanbul ignore next */
         next(err)
       });
   }
@@ -105,6 +107,7 @@ class Controller {
       .then((result) => {
         res.status(200).json(result)
       }).catch((err) => {
+        /* istanbul ignore next */
         next(err)
       });
   }

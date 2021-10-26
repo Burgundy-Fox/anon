@@ -12,7 +12,7 @@ class UserController {
                 username,
                 email,
                 password,
-                avatar: `https://avatars.dicebear.com/api/bottts/anon-${random}.svg`,
+                avatar: `https://robohash.org/anon-${random}`,
                 wallet: 0
             })
             res.status(201).json({
@@ -80,6 +80,8 @@ class UserController {
             })
             
         } catch (error) {
+            /* istanbul ignore next */
+
            next(error)
         }
     }
@@ -103,7 +105,8 @@ class UserController {
                 wallet: user[0][0][0].wallet
             })
         } catch (error) {
-           next(error)
+            /* istanbul ignore next */
+            next(error)
         }
     }
 }

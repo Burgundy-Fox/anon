@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.44% </span>
+                <span class="strong">97.14% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>34/36</span>
+                <span class='fraction'>34/35</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.87% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>31/32</span>
+                <span class='fraction'>31/31</span>
             </div>
         
             
@@ -171,26 +171,7 @@
 <a name='L112'></a><a href='#L112'>112</a>
 <a name='L113'></a><a href='#L113'>113</a>
 <a name='L114'></a><a href='#L114'>114</a>
-<a name='L115'></a><a href='#L115'>115</a>
-<a name='L116'></a><a href='#L116'>116</a>
-<a name='L117'></a><a href='#L117'>117</a>
-<a name='L118'></a><a href='#L118'>118</a>
-<a name='L119'></a><a href='#L119'>119</a>
-<a name='L120'></a><a href='#L120'>120</a>
-<a name='L121'></a><a href='#L121'>121</a>
-<a name='L122'></a><a href='#L122'>122</a>
-<a name='L123'></a><a href='#L123'>123</a>
-<a name='L124'></a><a href='#L124'>124</a>
-<a name='L125'></a><a href='#L125'>125</a>
-<a name='L126'></a><a href='#L126'>126</a>
-<a name='L127'></a><a href='#L127'>127</a>
-<a name='L128'></a><a href='#L128'>128</a>
-<a name='L129'></a><a href='#L129'>129</a>
-<a name='L130'></a><a href='#L130'>130</a>
-<a name='L131'></a><a href='#L131'>131</a>
-<a name='L132'></a><a href='#L132'>132</a>
-<a name='L133'></a><a href='#L133'>133</a>
-<a name='L134'></a><a href='#L134'>134</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L115'></a><a href='#L115'>115</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -246,6 +227,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -271,27 +253,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -317,7 +278,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -327,7 +289,7 @@
 const { passwordDecoder, tokenGenerator } = require('../helpers/index')
 &nbsp;
 class UserController {
-    static async register(req, res) {
+    static async register(req, res, next) {
         const { email, username, password } = req.body
    
         const random = Math.floor(Math.random() * 10000)
@@ -337,7 +299,7 @@ class UserController {
                 username,
                 email,
                 password,
-                avatar: `https://avatars.dicebear.com/api/bottts/anon-${random}.svg`,
+                avatar: `https://robohash.org/anon-${random}`,
                 wallet: 0
             })
             res.status(201).json({
@@ -348,11 +310,11 @@ class UserController {
                 wallet: user.wallet
             })
         } catch (error) {
-            res.status(500).json(error)
+           next(error)
         }
     }
 &nbsp;
-    static async login(req, res) {
+    static async login(req, res, next) {
         const { username, password } = req.body
         try {
             const user = await User.findOne({
@@ -360,10 +322,10 @@ class UserController {
                     username,
                 },
             })
-            if (!user) throw { error: 'User doesnt exist!' }
+            if (!user) throw ({ name: 'authentication error' })
             const isCorrect = passwordDecoder(password, user.password)
 &nbsp;
-            if (!isCorrect) throw { error: 'Wrong Password!' }
+            if (!isCorrect) throw ({ name: 'login failed' })
             const access_token = tokenGenerator({
                 id: user.id,
                 username: user.username,
@@ -378,11 +340,12 @@ class UserController {
                 access_token: access_token,
             })
         } catch (error) {
-            res.status(500).json(error)
+          console.log(error);
+           next(error)
         }
     }
 &nbsp;
-    static async updateAvatar (req, res) {
+    static async updateAvatar (req, res, next) {
         const id = +req.params.id
         const avatar = req.body.avatar
         
@@ -394,7 +357,7 @@ class UserController {
                 returning: true
             })
 &nbsp;
-            if (user[0] === 0) throw { error: 'user not found!' }
+            if (user[0] === 0) throw { name: 'update failed' }
             res.status(200).json({
                 id: user[1][0].id,
                 username: user[1][0].username,
@@ -404,34 +367,13 @@ class UserController {
             })
             
         } catch (error) {
-            res.status(500).json(error)
+            /* istanbul ignore next */
+&nbsp;
+           next(error)
         }
     }
 &nbsp;
-    // static async addWallet(req, res) {
-    //     const id = +req.params.id
-    //     const wallet = +req.body.wallet
-     
-    //     try {
-    //         const user = await User.increment('wallet', { 
-    //             by: wallet,
-    //             where: {
-    //                 id
-    //             }
-    //         })
-    //         res.status(200).json({
-    //             id: user[0][0][0].id,
-    //             username: user[0][0][0].username,
-    //             email: user[0][0][0].email,
-    //             wallet: user[0][0][0].wallet
-    //         })
-    //     } catch (error) {
-    //         res.status(500).json(error)
-    //     }
-    // }
-&nbsp;
-   
-    static async buyItem(req, res) {
+    static async buyItem(req, res, next) {
         const id =  +req.params.id
         const price = +req.body.price
 &nbsp;
@@ -442,7 +384,7 @@ class UserController {
                     id
                 }
             })
-            <span class="missing-if-branch" title="if path not taken" >I</span>if (user[0][1] === 0) <span class="cstat-no" title="statement not covered" >throw { error: 'user not found!' }</span>
+            <span class="missing-if-branch" title="if path not taken" >I</span>if (user[0][1] === 0) <span class="cstat-no" title="statement not covered" >throw { name: 'authentication error' }</span>
             res.status(200).json({
                 id: user[0][0][0].id,
                 username: user[0][0][0].username,
@@ -450,7 +392,8 @@ class UserController {
                 wallet: user[0][0][0].wallet
             })
         } catch (error) {
-<span class="cstat-no" title="statement not covered" >            res.status(500).json(error)</span>
+            /* istanbul ignore next */
+            next(error)
         }
     }
 }
@@ -463,7 +406,7 @@ module.exports = UserController
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Oct 22 2021 18:37:46 GMT+0700 (Western Indonesia Time)
+                at Tue Oct 26 2021 14:15:52 GMT+0700 (Western Indonesia Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

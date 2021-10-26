@@ -319,8 +319,8 @@ Request:
 
 ```json
 {
-    "contents": "Fifty years ago, for every $1 a man earned, a woman would only get around $0.60. Today, that figure is closer to $0.83, and although there’s still a long way to go, the gender pay gap has significantly narrowed in recent years. What do we know?",
-    "image": "url"
+    "content": "Fifty years ago, for every $1 a man earned, a woman would only get around $0.60. Today, that figure is closer to $0.83, and although there’s still a long way to go, the gender pay gap has significantly narrowed in recent years. What do we know?",
+    "image" : "<file | optional>"
 }
 ```
 
@@ -332,12 +332,13 @@ Response:
 
 ```json
 {
-    "id": 1,
-    "contents": "Fifty years ago, for every $1 a man earned, a woman would only get around $0.60. Today, that figure is closer to $0.83, and although there’s still a long way to go, the gender pay gap has significantly narrowed in recent years. What do we know?",
-    "image": "url",
-    "UserId": 2,
-    "updatedAt": "2021-09-10T04:27:26.382Z",
-    "createdAt": "2021-09-10T04:27:26.382Z"
+    "id": 8,
+    "content": "Fifty years ago, for every $1 a man earned, a woman would only get around $0.60. Today, that figure is closer to $0.83, and although there’s still a long way to go, the gender pay gap has significantly narrowed in recent years. What do we know?",
+    "image_url": "https://ik.imagekit.io/ay4wotu5yqh/ANON2021-10-20T16_22_59.874Zbird-thumbnail_U_d0WPuM9.jpg",
+    "like": 0,
+    "UserId": 1,
+    "updatedAt": "2021-10-20T16:23:01.191Z",
+    "createdAt": "2021-10-20T16:23:01.191Z"
 }
 ```
 

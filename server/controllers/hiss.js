@@ -1,10 +1,10 @@
-const { Hiss } = require("../models");
+const { User, Hiss } = require("../models");
 
 class HissController {
   static createHiss(req, res, next) {
     const input = {
       content: req.body.content,
-      image_url: req.body.image_url,
+      image_url: req.image_url || null,
       like: 0,
       UserId: +req.currentUser.id,
     };
@@ -16,16 +16,27 @@ class HissController {
 
   static getAllHiss(req, res, next) {
     Hiss.findAll({
-      order: [["id", "ASC"]],
+      order: [["createdAt", "DESC"]],
+      include: [
+        {
+          model: User,
+        },
+      ],
     })
       .then((hisses) => res.status(200).json(hisses))
-      .catch((error) => next(error));
+      .catch((error) => {
+        /* istanbul ignore next */
+        next(error)
+      });
   }
 
   static getHissById(req, res, next) {
-    Hiss.findAll({where: {UserId : req.params.id}})
+    Hiss.findAll({ where: { UserId: req.params.id } })
       .then((hiss) => res.status(200).json(hiss))
-      .catch((error) => next(error));
+      .catch((error) => {
+        /* istanbul ignore next */
+        next(error)
+      });
   }
 
   static updateLikeHiss(req, res, next) {
@@ -45,7 +56,10 @@ class HissController {
 
         return res.status(200).json(resultUpdateLikeHiss);
       })
-      .catch((error) => next({ error }));
+      .catch((error) => {
+        /* istanbul ignore next */
+        next(error)
+      });
   }
 
   static updateHiss(req, res, next) {
@@ -64,7 +78,9 @@ class HissController {
         const resultUpdateHiss = hiss[1][0];
         return res.status(200).json(resultUpdateHiss);
       })
-      .catch((error) => next({ error }));
+      .catch((error) => {
+        next(error)
+      });
   }
 
   static deleteHiss(req, res, next) {
@@ -79,7 +95,10 @@ class HissController {
           success_message: "Data deleted successfully",
         });
       })
-      .catch((error) => next(error));
+      .catch((error) => {
+        /* istanbul ignore next */
+        next(error)
+      });
   }
 }
 

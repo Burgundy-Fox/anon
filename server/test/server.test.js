@@ -57,8 +57,8 @@ describe('POST user/register', () => {
           password: "1234",
         })
         .then(({ body, status }) => {
-          expect(status).toBe(500)
-          expect(body.errors[0].type).toContain('Validation error')
+          expect(status).toBe(400)
+          expect(body).toHaveProperty("error", expect.any(Array))
           done()
         })
     })
@@ -95,8 +95,8 @@ describe('POST/login', () => {
           password: "123456789",
         })
         .then(({ body, status }) => {
-          expect(status).toBe(500)
-          expect(body).toHaveProperty("error", expect.any(String))
+          expect(status).toBe(401)
+          expect(body.error[0]).toContain("User not found")
           done()
         })
     })
@@ -109,8 +109,8 @@ describe('POST/login', () => {
           password: "123456",
         })
         .then(({ body, status }) => {
-          expect(status).toBe(500)
-          expect(body).toHaveProperty("error", expect.any(String))
+          expect(status).toBe(400)
+          expect(body.error[0]).toContain("Email or Password Incorrect")
           done()
         })
     })
@@ -145,8 +145,8 @@ describe(`PATCH/user/:id`, () => {
           avatar: 'https://avatars.dicebear.com/api/bottts/anon-168.svg',
         })
         .then(({ body, status }) => {
-          expect(status).toBe(500)
-          expect(body).toEqual({ error: expect.any(String) })
+          expect(status).toBe(404)
+          expect(body).toEqual({ error: expect.any(Array) })
           done()
         })
     })
@@ -159,7 +159,7 @@ describe(`PATCH/user/:id`, () => {
         })
         .then(({ body, status }) => {
           expect(status).toBe(401)
-          expect(body).toEqual(expect.any(String))
+          expect(body).toEqual(expect.any(Object))
           done()
         })
     })
@@ -193,8 +193,8 @@ describe(`PATCH/user/buy-item/:id`, () => {
           price: 5000,
         })
         .then(({ body, status }) => {
-          expect(status).toBe(500)
-          expect(body.name).toContain("JsonWebTokenError")
+          expect(status).toBe(401)
+          expect(body.error).toContain("acces token not found or invalid token")
           done()
         })
     })
@@ -230,8 +230,8 @@ describe('POST /hisses', () => {
           UserId: idUser
         })
         .then(({ body, status }) => {
-          expect(status).toBe(500)
-          expect(body.errors[0].type).toContain('Validation error')
+          expect(status).toBe(400)
+          expect(body.error).toEqual(expect.any(Array))
           done()
         })
     })
@@ -254,7 +254,7 @@ describe('GET /hisses', () => {
       request(app).get('/hisses')
         .then(({ body, status }) => {
           expect(status).toBe(401)
-          expect(body).toContain('Access token missing')
+          expect(body.error).toContain('acces token not found or invalid token')
           done()
         })
     })
@@ -277,8 +277,8 @@ describe('GET /hisses/:id', () => {
       request(app).get('/hisses/9999')
         .set({ access_token: token })
         .then(({ body, status }) => {
-          expect(status).toBe(401)
-          expect(body).toContain('Not Found')
+          expect(status).toBe(404)
+          expect(body.error).toContain('Data not found')
           done()
         })
     })
@@ -312,8 +312,8 @@ describe('PUT /hisses/:id', () => {
           UserId: idUser
         })
         .then(({ body, status }) => {
-          expect(status).toBe(500)
-          expect(body.error.name).toContain('SequelizeValidationError')
+          expect(status).toBe(400)
+          expect(body.error[0]).toContain('Content input cannot be empty')
           done()
         })
     })
@@ -343,8 +343,8 @@ describe('Patch /hisses/:id', () => {
           like: 1
         })
         .then(({ body, status }) => {
-          expect(status).toBe(401)
-          expect(body).toContain('Not Found')
+          expect(status).toBe(404)
+          expect(body.error).toContain('Data not found')
           done()
         })
     })
@@ -375,8 +375,8 @@ describe('Delete /hisses/:id', () => {
           like: 1
         })
         .then(({ body, status }) => {
-          expect(status).toBe(401)
-          expect(body).toContain('Not Found')
+          expect(status).toBe(404)
+          expect(body.error).toContain('Data not found')
           done()
         })
     })
@@ -424,8 +424,8 @@ describe('POST /transaction', () => {
         })
         .then(({ body, status }) => {
           console.log(status, body ,"staus");
-          expect(status).toBe(500)
-          expect(body.name).toContain("Transaction Not Found")
+          expect(status).toBe(404)
+          expect(body.error).toContain("Data Transaction not found, input transaction status")
           done()
         })
     })
@@ -438,8 +438,8 @@ describe('POST /transaction', () => {
           transaction_status: "",
         })
         .then(({ body, status }) => {
-          expect(status).toBe(500)
-          expect(body.name).toContain("SequelizeDatabaseError")
+          expect(status).toBe(400)
+          expect(body.error).toContain("please check your input, make sure you have inputted them all")
           done()
         })
     })
@@ -462,38 +462,8 @@ describe('GET /transaction', () => {
       request(app).get('/transaction')
         .then(({ body, status }) => {
           expect(status).toBe(401)
-          expect(body).toContain('Access token missing')
+          expect(body.error).toContain('acces token not found or invalid token')
           done()
         })
     })
 })
-
-// describe('POST /transaction/midtransToken', () => {
-//   it('Success post token, returning token and URL',
-//     (done) => {
-//       request(app).post('/transaction/midtransToken')
-//         .set({ access_token: token })
-//         .send({
-//           price: 5000
-//         })
-//         .then(({ body, status }) => {
-//           console.log(status,body);
-//           expect(status).toBe(200)
-//           expect(body).toEqual(expect.any(Object))
-//           done()
-//         })
-//     })
-
-//   it('fail getting midtransToken, returning error',
-//     (done) => {
-//       request(app).post('/transaction/midtransToken')
-//         .set({ access_token: token })
-//         .then(({ body, status }) => {
-//           console.log(status,body, "err");
-//           expect(status).toBe(401)
-//           expect(body).toContain('Access token missing')
-//           done()
-//         })
-//     })
-// })
-

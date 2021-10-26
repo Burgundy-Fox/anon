@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const { clearTheWords } = require('kasar')
 module.exports = (sequelize, DataTypes) => {
   class Hiss extends Model {
     /**
@@ -9,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Hiss.belongsTo(models.User, { foreignKey: "UserId" });
     }
   }
   Hiss.init(
@@ -27,16 +29,9 @@ module.exports = (sequelize, DataTypes) => {
       },
       image_url: {
         type: DataTypes.STRING,
-        allowNull: false,
         validate: {
           isUrl: {
             msg: "image_url input must be in url format",
-          },
-          notNull: {
-            msg: "image_url input cannot be null",
-          },
-          notEmpty: {
-            msg: "image_url input cannot be empty",
           },
         },
       },
@@ -48,5 +43,8 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Hiss",
     }
   );
+  Hiss.beforeCreate((instances, options) => {
+    instances.content = clearTheWords(instances.content)
+  });
   return Hiss;
 };
