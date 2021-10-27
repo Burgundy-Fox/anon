@@ -40,13 +40,13 @@ export default function Mention({ navigation, route }) {
                 const filteredDataHiss = dataHiss.filter((el) =>
                     el.content.includes(`@Anon${UserId}`)
                 )
-                // console.log(dataHiss)
+                console.log(dataHiss)
                 // console.log(filteredDataHiss)
                 setMentions(filteredDataHiss)
             } else {
             }
         })
-    }, [])
+    }, [dataHiss])
 
     if (!dataHiss.length) {
         return (

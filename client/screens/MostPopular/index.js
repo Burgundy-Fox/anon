@@ -17,18 +17,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 export default function MostPopular({ navigation, route }) {
   const { dataHiss } = useSelector((state) => state.hissesReducer)
   // const { access_token } = useSelector(state => state.usersReducer)
-  const [id, setId] = useState()
   const [popular, setPopular] = useState()
 
-  const dispatch = useDispatch()
-
   useEffect(() => {
-    let output = dataHiss.sort((a, b) => {
+    let output = [...dataHiss]
+    let newOutput = output.sort((a, b) => {
       return b.Likes.length - a.Likes.length
     }).filter(el => {
-      return new Date(el.createdAt).getDate() < new Date(new Date().setDate(new Date().getDate() -3))})
-    setPopular(output)
-  }, [])
+      return el.Likes.length > 0 && new Date(el.createdAt).getDate() > new Date().getDate() - 3
+    }).filter((el, index) => {
+        return index < 10
+      })
+    setPopular(newOutput)
+  }, [dataHiss])
 
   if (!dataHiss.length) {
     return (
