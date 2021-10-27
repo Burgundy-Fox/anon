@@ -5,7 +5,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SplashScreen({ navigation }) {
-
   setTimeout(async () => {
     try {
       const value = await AsyncStorage.getItem("@access_token");
@@ -27,7 +26,7 @@ export default function SplashScreen({ navigation }) {
           source={require("../../assets/chameleon.png")}
         />
         <Text style={{ fontSize: 15, marginTop: 160 }}>
-          Panji - Andhika - Bagus - Jasper {"\n"} © 2021 Made in Burgundy Fox
+          Panji - Andhika - Bagus - Jasper {"\n"} © 2021 Made by Burgundy Fox
         </Text>
       </View>
     </SafeAreaView>

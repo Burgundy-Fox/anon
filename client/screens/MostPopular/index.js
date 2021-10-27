@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   View,
   Text,
@@ -7,16 +7,18 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-} from 'react-native'
+  ImageBackground,
+} from "react-native";
 
-import { getAllHiss } from '../../store/actions/hisses'
-import { getUserDetails } from '../../store/actions/user'
-import Hiss from '../../components/Hiss'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { getAllHiss } from "../../store/actions/hisses";
+import { getUserDetails } from "../../store/actions/user";
+import Hiss from "../../components/Hiss";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function MostPopular({ navigation, route }) {
-  const { dataHiss } = useSelector((state) => state.hissesReducer)
+  const { dataHiss } = useSelector((state) => state.hissesReducer);
   // const { access_token } = useSelector(state => state.usersReducer)
+<<<<<<< HEAD
   const [popular, setPopular] = useState()
 
   useEffect(() => {
@@ -30,39 +32,65 @@ export default function MostPopular({ navigation, route }) {
       })
     setPopular(newOutput)
   }, [dataHiss])
+=======
+  const [id, setId] = useState();
+  const [popular, setPopular] = useState();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    let output = [...dataHiss];
+    let newOutput = output
+      .sort((a, b) => {
+        return b.Likes.length - a.Likes.length;
+      })
+      .filter((el) => {
+        return (
+          el.Likes.length > 0 &&
+          new Date(el.createdAt).getDate() > new Date().getDate() - 3
+        );
+      })
+      .filter((el, index) => {
+        return index < 10;
+      });
+    setPopular(newOutput);
+  }, [dataHiss]);
+>>>>>>> 5bfd438839886378f97a8d4fbba7c14eb668f04d
 
   if (!dataHiss.length) {
     return (
       <View>
         <Text>Loading...</Text>
       </View>
-    )
+    );
   }
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={popular}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => {
-          return (
-            <Hiss
-              item={item}
-              route={route.name}
-              navigation={navigation}
-            />
-          )
-        }}
-      />
+      <ImageBackground
+        source={require("../../assets/chameleon-pattern3.png")}
+        resizeMode="cover"
+        style={styles.backgroundImage}
+      >
+        <FlatList
+          data={popular}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => {
+            return (
+              <Hiss item={item} route={route.name} navigation={navigation} />
+            );
+          }}
+        />
+      </ImageBackground>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    justifyContent: "center",
     padding: 10,
   },
   img: {
@@ -71,4 +99,8 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     borderWidth: 1,
   },
-})
+  backgroundImage: {
+    flex: 1,
+    justifyContent: "center",
+  },
+});
