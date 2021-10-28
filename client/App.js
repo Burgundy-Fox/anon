@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import store from "./store";
 import Router from "./router";
 import axios from "axios";
-axios.defaults.baseURL="http://192.168.68.102:4000"
+axios.defaults.baseURL="http://192.168.18.2:4000"
 
 // import { useFonts, Inter_400Regular, Inter_300Light  } from "@expo-google-fonts/inter";
 // import { useFonts, Roboto_300Light, Roboto_700Bold } from "@expo-google-fonts/roboto";

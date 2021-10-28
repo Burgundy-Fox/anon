@@ -1,9 +1,10 @@
 import * as firebase from "firebase";
 import "firebase/auth";
 import "firebase/firestore";
+import { APIKEY } from '@env'
 
 let firebaseConfig = {
-    apiKey: "AIzaSyDeY3kco62ikakUtxmiDvXgkGx0_FkyC-Q",
+    apiKey: APIKEY,
     authDomain: "anon-social-mobile-app.firebaseapp.com",
     projectId: "anon-social-mobile-app",
     storageBucket: "anon-social-mobile-app.appspot.com",
