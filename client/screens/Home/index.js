@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   View,
-  Text,
   FlatList,
-  Image,
   StyleSheet,
-  TouchableOpacity,
   ImageBackground,
 } from "react-native";
 import Loader from "../../components/Loader";
-
 
 import { getAllHiss } from "../../store/actions/hisses";
 import { getUserDetails } from "../../store/actions/user";
@@ -23,7 +19,6 @@ export default function Home({ navigation, route }) {
   const dispatch = useDispatch();
 
   async function initialStore() {
-    console.log("initalizing redux");
     try {
       let token = await AsyncStorage.getItem("@access_token");
       dispatch({ type: "SET_ACCESS_TOKEN", payload: token });

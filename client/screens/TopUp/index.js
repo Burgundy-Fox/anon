@@ -5,21 +5,19 @@ import axios from "axios";
 
 import { Feather } from "@expo/vector-icons";
 
-const baseUrl = "http://192.168.100.53:4000";
 export default function index({ navigation }) {
   const { access_token } = useSelector((state) => state.usersReducer);
 
   function midtransWeb(price) {
     axios({
       method: "post",
-      url: `${baseUrl}/transaction/midtransToken`,
+      url: `/transaction/midtransToken`,
       data: {
         price,
       },
       headers: { access_token },
     })
       .then(({ data }) => {
-        console.log(data);
         navigation.navigate("Webview", { url: data.transaction.redirect_url });
       })
       .catch((err) => {

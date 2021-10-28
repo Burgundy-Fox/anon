@@ -47,5 +47,8 @@ module.exports = (sequelize, DataTypes) => {
   Hiss.beforeCreate((instances, options) => {
     instances.content = clearTheWords(instances.content)
   });
+  Hiss.beforeBulkUpdate((instances, options) => {
+    instances.attributes.content = clearTheWords(instances.attributes.content)
+  });
   return Hiss;
 };

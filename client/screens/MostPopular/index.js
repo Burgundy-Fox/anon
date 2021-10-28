@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
+import Loader from "../../components/Loader";
 
 import { getAllHiss } from "../../store/actions/hisses";
 import { getUserDetails } from "../../store/actions/user";
@@ -18,7 +19,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function MostPopular({ navigation, route }) {
   const { dataHiss } = useSelector((state) => state.hissesReducer);
   // const { access_token } = useSelector(state => state.usersReducer)
-<<<<<<< HEAD
   const [popular, setPopular] = useState()
 
   useEffect(() => {
@@ -32,36 +32,10 @@ export default function MostPopular({ navigation, route }) {
       })
     setPopular(newOutput)
   }, [dataHiss])
-=======
-  const [id, setId] = useState();
-  const [popular, setPopular] = useState();
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    let output = [...dataHiss];
-    let newOutput = output
-      .sort((a, b) => {
-        return b.Likes.length - a.Likes.length;
-      })
-      .filter((el) => {
-        return (
-          el.Likes.length > 0 &&
-          new Date(el.createdAt).getDate() > new Date().getDate() - 3
-        );
-      })
-      .filter((el, index) => {
-        return index < 10;
-      });
-    setPopular(newOutput);
-  }, [dataHiss]);
->>>>>>> 5bfd438839886378f97a8d4fbba7c14eb668f04d
 
   if (!dataHiss.length) {
     return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
+      <Loader />
     );
   }
 

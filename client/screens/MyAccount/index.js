@@ -10,7 +10,6 @@ import {
   Alert,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Ionicons } from "@expo/vector-icons";
 import { auth } from "../../firebase/firebase";
 import Hiss from "../../components/Hiss";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -30,7 +29,6 @@ export default function MyAccount({ navigation, route }) {
   if (route.params && route.params.updateDetails) {
     dispatch(getUserDetails(access_token));
     route.params.updateDetails = false;
-    // getData();
   }
 
   useEffect(() => {
@@ -188,7 +186,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingTop: 35,
-    // alignItems: "center",
   },
   button: {
     alignItems: "center",
