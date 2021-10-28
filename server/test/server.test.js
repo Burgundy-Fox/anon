@@ -16,6 +16,10 @@ beforeAll((done) => {
     .bulkDelete("Users")
     .then((response) => done())
     .catch((err) => done(err))
+  queryInterface
+    .bulkDelete("Likes")
+    .then((response) => done())
+    .catch((err) => done(err))
 })
 
 let idUser
@@ -116,10 +120,109 @@ describe('POST/login', () => {
     })
 })
 
-describe(`PATCH/user/:id`, () => {
+describe(`PATCH/user`, () => {
+  it('failed change avatar of user, return error',
+    (done) => {
+      request(app).patch(`/user`)
+        .set({ access_token: token })
+        .send({
+          avatar: 'https://avatars.dicebear.com/api/bottts/anon-168.svg',
+        })
+        .then(({ body, status }) => {
+          expect(status).toBe(400)
+          expect(body.message).toContain("Please Top up First")
+          done()
+        })
+    })
+})
+
+describe('POST /transaction', () => {
+  it('Success make transaction, returning token and URL',
+    (done) => {
+      request(app).post('/transaction')
+        .send({
+          order_id: `TOP5000TOPBUG1995-12-16T20:24:00.000ZAnonUser${idUser}`,
+          transaction_status: "pending",
+          gross_amount: 5000,
+
+        })
+        .then(({ body, status }) => {
+          expect(status).toBe(201)
+          expect(body).toEqual(expect.any(Object))
+          done()
+        })
+    })
+
+  it('Success update transaction, returning token and URL',
+    (done) => {
+      request(app).post('/transaction')
+        .send({
+          order_id: `TOP5000TOPBUG1995-12-16T20:24:00.000ZAnonUser${idUser}`,
+          transaction_status: "settlement",
+          gross_amount: 5000,
+
+        })
+        .then(({ body, status }) => {
+          expect(status).toBe(200)
+          expect(body).toEqual(expect.any(Object))
+          done()
+        })
+    })
+
+  it('fail update transaction, returning error',
+    (done) => {
+      request(app).post('/transaction')
+        .send({
+          order_id: `TOP5000TOPBUG1995-12-16T20:24:00.000ZAnonUser${idUser}`,
+        })
+        .then(({ body, status }) => {
+          expect(status).toBe(404)
+          expect(body.error).toContain("Data Transaction not found, input transaction status")
+          done()
+        })
+    })
+
+  it('fail make transaction with no gross_amount, returning error',
+    (done) => {
+      request(app).post('/transaction')
+        .send({
+          order_id: `TOP5000TOPBUG1995-12-16T20:24:00.000ZAnonUser${idUser}`,
+          transaction_status: "",
+        })
+        .then(({ body, status }) => {
+          expect(status).toBe(400)
+          expect(body.error).toContain("please check your input, make sure you have inputted them all")
+          done()
+        })
+    })
+})
+describe('GET /transaction', () => {
+  it('Success view transaction, returning token and URL',
+    (done) => {
+      request(app).get('/transaction')
+        .set({ access_token: token })
+        .then(({ body, status }) => {
+          expect(status).toBe(200)
+          expect(body).toEqual(expect.any(Object))
+          done()
+        })
+    })
+
+  it('fail view transaction with no access_token, returning error',
+    (done) => {
+      request(app).get('/transaction')
+        .then(({ body, status }) => {
+          expect(status).toBe(401)
+          expect(body.error).toContain('acces token not found or invalid token')
+          done()
+        })
+    })
+})
+
+describe(`PATCH/user`, () => {
   it('success change avatar of user, return data User',
     (done) => {
-      request(app).patch(`/user/${idUser}`)
+      request(app).patch(`/user`)
         .set({ access_token: token })
         .send({
           avatar: 'https://avatars.dicebear.com/api/bottts/anon-168.svg',
@@ -137,19 +240,7 @@ describe(`PATCH/user/:id`, () => {
         })
     })
 
-  it('failed change avatar of user, return error',
-    (done) => {
-      request(app).patch(`/user/9999999`)
-        .set({ access_token: token })
-        .send({
-          avatar: 'https://avatars.dicebear.com/api/bottts/anon-168.svg',
-        })
-        .then(({ body, status }) => {
-          expect(status).toBe(404)
-          expect(body).toEqual({ error: expect.any(Array) })
-          done()
-        })
-    })
+
 
   it('failed change avatar of user, no access token return error',
     (done) => {
@@ -164,42 +255,6 @@ describe(`PATCH/user/:id`, () => {
         })
     })
 })
-
-describe(`PATCH/user/buy-item/:id`, () => {
-  it('success buying item, return data User',
-    (done) => {
-      request(app).patch(`/user/buy-item/${idUser}`)
-        .set({ access_token: token })
-        .send({
-          price: 5000,
-        })
-        .then(({ body, status }) => {
-          expect(status).toBe(200)
-          expect(body).toEqual({
-            id: expect.any(Number),
-            username: expect.any(String),
-            email: expect.any(String),
-            wallet: expect.any(Number)
-          })
-          done()
-        })
-    })
-
-  it('failed added wallet with invalid access_token id, return error',
-    (done) => {
-      request(app).patch(`/user/buy-item/${idUser}`)
-        .set({ access_token: "HADhasmdnelalkddsmadas" })
-        .send({
-          price: 5000,
-        })
-        .then(({ body, status }) => {
-          expect(status).toBe(401)
-          expect(body.error).toContain("acces token not found or invalid token")
-          done()
-        })
-    })
-})
-
 
 describe('POST /hisses', () => {
   it('Success make hiss with all body inputted, returning data hiss',
@@ -237,6 +292,29 @@ describe('POST /hisses', () => {
     })
 })
 
+describe('GET /user', () => {
+  it('Success getting detail User, returning data',
+    (done) => {
+      request(app).get('/user')
+        .set({ access_token: token })
+        .then(({ body, status }) => {
+          expect(status).toBe(200)
+          expect(body).toEqual(expect.any(Object))
+          done()
+        })
+    })
+
+  it('fail getting user with no access token, returning error',
+    (done) => {
+      request(app).get('/user')
+        .then(({ body, status }) => {
+          expect(status).toBe(401)
+          expect(body.error).toContain('acces token not found or invalid token')
+          done()
+        })
+    })
+})
+
 describe('GET /hisses', () => {
   it('Success getting all hiss, returning data hiss',
     (done) => {
@@ -267,7 +345,7 @@ describe('GET /hisses/:id', () => {
         .set({ access_token: token })
         .then(({ body, status }) => {
           expect(status).toBe(200)
-          expect(body).toEqual(expect.any(Array))
+          expect(body).toEqual(expect.any(Object))
           done()
         })
     })
@@ -350,6 +428,29 @@ describe('Patch /hisses/:id', () => {
     })
 })
 
+describe('POST /like/:hissId', () => {
+  it('Success make like, returning message succes',
+    (done) => {
+      request(app).post(`/like/${hissId}`)
+        .set({ access_token: token })
+        .then(({ body, status }) => {
+          expect(status).toBe(201)
+          expect(body.message).toContain("Like Success")
+          done()
+        })
+    })
+
+  it('Failed like twice hiss, returning error',
+    (done) => {
+      request(app).post(`/like/${hissId}`)
+        .set({ access_token: token })
+        .then(({ body, status }) => {
+          expect(status).toBe(400)
+          expect(body.error).toContain("Already Liked")
+          done()
+        })
+    })
+})
 
 describe('Delete /hisses/:id', () => {
   it('Success delete hiss by id, returning success message',
@@ -382,88 +483,3 @@ describe('Delete /hisses/:id', () => {
     })
 })
 
-
-describe('POST /transaction', () => {
-  it('Success make transaction, returning token and URL',
-    (done) => {
-      request(app).post('/transaction')
-        .send({
-          order_id: `TOP5000TOPBUG1995-12-16T20:24:00.000ZAnonUser${idUser}`,
-          transaction_status: "pending",
-          gross_amount: 5000,
-
-        })
-        .then(({ body, status }) => {
-          expect(status).toBe(201)
-          expect(body).toEqual(expect.any(Object))
-          done()
-        })
-    })
-
-  it('Success update transaction, returning token and URL',
-    (done) => {
-      request(app).post('/transaction')
-        .send({
-          order_id: `TOP5000TOPBUG1995-12-16T20:24:00.000ZAnonUser${idUser}`,
-          transaction_status: "settlement",
-          gross_amount: 5000,
-
-        })
-        .then(({ body, status }) => {
-          expect(status).toBe(200)
-          expect(body).toEqual(expect.any(Object))
-          done()
-        })
-    })
-
-  it('fail update transaction, returning error',
-    (done) => {
-      request(app).post('/transaction')
-        .send({
-          order_id: `TOP5000TOPBUG1995-12-16T20:24:00.000ZAnonUser${idUser}`,
-        })
-        .then(({ body, status }) => {
-          console.log(status, body ,"staus");
-          expect(status).toBe(404)
-          expect(body.error).toContain("Data Transaction not found, input transaction status")
-          done()
-        })
-    })
-
-  it('fail make transaction with no gross_amount, returning error',
-    (done) => {
-      request(app).post('/transaction')
-        .send({
-          order_id: `TOP5000TOPBUG1995-12-16T20:24:00.000ZAnonUser${idUser}`,
-          transaction_status: "",
-        })
-        .then(({ body, status }) => {
-          expect(status).toBe(400)
-          expect(body.error).toContain("please check your input, make sure you have inputted them all")
-          done()
-        })
-    })
-})
-
-describe('GET /transaction', () => {
-  it('Success view transaction, returning token and URL',
-    (done) => {
-      request(app).get('/transaction')
-        .set({ access_token: token })
-        .then(({ body, status }) => {
-          expect(status).toBe(200)
-          expect(body).toEqual(expect.any(Object))
-          done()
-        })
-    })
-
-  it('fail view transaction with no access_token, returning error',
-    (done) => {
-      request(app).get('/transaction')
-        .then(({ body, status }) => {
-          expect(status).toBe(401)
-          expect(body.error).toContain('acces token not found or invalid token')
-          done()
-        })
-    })
-})

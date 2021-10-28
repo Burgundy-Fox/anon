@@ -55,6 +55,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         validate: {
           isGreaterThan0(value) {
+            /* istanbul ignore next */
             if (value < 0) {
               throw new Error("quantity can't be negative.");
             }

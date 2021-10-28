@@ -28,6 +28,7 @@ function authentication(req, res, next) {
         next(error)
       });
   } catch (error) {
+    /* istanbul ignore next */
     return next(error);
   }
 }
