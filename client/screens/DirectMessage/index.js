@@ -9,14 +9,11 @@ import {
   StyleSheet,
 } from "react-native";
 import { db, auth } from "../../firebase/firebase";
-import { AntDesign } from "@expo/vector-icons";
+import Loader from "../../components/Loader";
 import {
-  RotationGestureHandler,
   TouchableOpacity,
 } from "react-native-gesture-handler";
 import { Avatar } from "react-native-elements/dist/avatar/Avatar";
-import { SvgCssUri, SvgUri } from "react-native-svg";
-import axios from "axios";
 
 const DirectMessage = ({ navigation, route }) => {
   // console.log(auth.currentUser.photoURL)
@@ -157,10 +154,6 @@ const DirectMessage = ({ navigation, route }) => {
             </View>
           </View>
         )}
-        <View>
-          {/* {console.log(item.user2._id)}
-                    {console.log(currentId, 'ini currentId')} */}
-        </View>
       </View>
     </TouchableOpacity>
   );
@@ -190,7 +183,6 @@ const DirectMessage = ({ navigation, route }) => {
             data={filteredArr2}
             renderItem={renderItem}
             keyExtractor={(item, index) => {
-              // console.log(item)
               return index.toString();
             }}
           />
@@ -198,9 +190,7 @@ const DirectMessage = ({ navigation, route }) => {
       </View>
     );
   } else {
-    return <Text>Loading...</Text>;
-    // return <Button title="bud"
-    // onPress={()=> handleOnPress('bangjago@mail.com')}></Button>
+    return <Loader />
   }
 };
 

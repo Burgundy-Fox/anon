@@ -127,14 +127,13 @@ export default function MyAccount({ navigation, route }) {
           />
           <TouchableOpacity
             style={{
-              width: 110,
-              marginTop: 10,
-              borderRadius: 13,
+              width: 120,
+              marginTop: 20,
+              borderRadius: 18,
               borderWidth: 1,
               alignItems: "center",
               backgroundColor: "#ffda79",
-              paddingHorizontal: 8,
-              paddingVertical: 8,
+              padding: 8,
             }}
             onPress={() => handleBuyAvatar()}
           >
@@ -164,8 +163,8 @@ export default function MyAccount({ navigation, route }) {
             style={[styles.button]}
             onPress={() => handleLogOut()}
           >
-            <Text style={{ fontSize: 18, fontWeight: "bold", color: "#fff" }}>
-              Log out
+            <Text style={{ fontSize: 18, color: "#fff" }}>
+              Logout
             </Text>
           </TouchableOpacity>
         </View>

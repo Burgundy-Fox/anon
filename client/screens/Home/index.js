@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
+import Loader from "../../components/Loader";
+
 
 import { getAllHiss } from "../../store/actions/hisses";
 import { getUserDetails } from "../../store/actions/user";
@@ -27,8 +29,6 @@ export default function Home({ navigation, route }) {
       dispatch({ type: "SET_ACCESS_TOKEN", payload: token });
       dispatch(getAllHiss(token));
       dispatch(getUserDetails(token));
-      // let username = await AsyncStorage.getItem('@Username')
-      // dispatch({ type: "SET_USERNAME", payload: username });
     } catch (error) {
       console.log(error);
     }
@@ -40,18 +40,12 @@ export default function Home({ navigation, route }) {
 
   if (!dataHiss.length) {
     return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
+        <Loader/>
     );
   }
 
   return (
     <View style={styles.container}>
-      {/* <Image
-        style={styles.img}
-        source={require("../../assets/chameleon.png")}
-      /> */}
       <ImageBackground
         source={require("../../assets/chameleon-pattern3.png")}
         resizeMode="cover"

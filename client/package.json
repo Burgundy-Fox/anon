@@ -9,6 +9,9 @@
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.0",
+    "@expo-google-fonts/lobster": "^0.2.0",
+    "@expo-google-fonts/quicksand": "^0.2.0",
+    "@expo-google-fonts/roboto": "^0.2.0",
     "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-native-masked-view/masked-view": "0.2.4",
     "@react-navigation/bottom-tabs": "^6.0.9",
@@ -38,7 +41,8 @@
     "react-redux": "^7.2.5",
     "redux": "^4.1.1",
     "redux-devtools-extension": "^2.13.9",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "undefined": "@expo-google-fonts/Open+Sans"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"
