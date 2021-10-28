@@ -33,6 +33,31 @@ export default function Mention({ navigation, route }) {
   }
   const dispatch = useDispatch();
 
+<<<<<<< HEAD
+    useEffect(() => {
+        getUserId()
+        .then((UserId) => {
+          // console.log(UserId, 'ini userId')
+            if (UserId) {
+                const filteredDataHiss = dataHiss.filter((el) =>
+                    el.content.includes(`@Anon${UserId}`)
+                )
+                console.log(dataHiss)
+                // console.log(filteredDataHiss)
+                setMentions(filteredDataHiss)
+            } else {
+            }
+        })
+    }, [dataHiss])
+
+    if (!dataHiss.length) {
+        return (
+            <View>
+                <Text>Loading...</Text>
+            </View>
+        )
+    }
+=======
   useEffect(() => {
     getUserId().then((UserId) => {
       // console.log(UserId, 'ini userId')
@@ -47,6 +72,7 @@ export default function Mention({ navigation, route }) {
       }
     });
   }, [dataHiss]);
+>>>>>>> 5bfd438839886378f97a8d4fbba7c14eb668f04d
 
   if (!dataHiss.length) {
     return (
