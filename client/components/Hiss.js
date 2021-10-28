@@ -18,7 +18,6 @@ import axios from "axios";
 
 export default function Hiss({ navigation, item, route }) {
   const access_token = useSelector((state) => state.usersReducer.access_token);
-  const baseUrl = "http://192.168.100.53:4000";
   const [avatar, setAvatar] = useState("");
   const [id, setId] = useState("");
   const [email, setEmail] = useState("");
@@ -48,17 +47,15 @@ export default function Hiss({ navigation, item, route }) {
   }
 
   function handleLike(hissId) {
-    console.log(hissId);
     axios({
       method: "post",
-      url: `${baseUrl}/like/${hissId}`,
+      url: `/like/${hissId}`,
       headers: {
         access_token,
       },
     })
       .then((result) => {
         dispatch(getAllHiss(access_token));
-        console.log("like bertambah 1");
       })
       .catch((err) => {
         console.log(err);
@@ -90,7 +87,6 @@ export default function Hiss({ navigation, item, route }) {
     });
   }
 
-  if (email) {
     return (
       <View
         key={item.id}
@@ -112,7 +108,6 @@ export default function Hiss({ navigation, item, route }) {
           },
           shadowOpacity: 0.25,
           shadowRadius: 3.84,
-
           elevation: 5,
         }}
       >
@@ -149,8 +144,8 @@ export default function Hiss({ navigation, item, route }) {
             }}
           >
             {route === "Home" ||
-            route === "Mention" ||
-            route === "Most Popular" ? (
+              route === "Mention" ||
+              route === "Most Popular" ? (
               <>
                 <TouchableOpacity
                   style={{ marginLeft: 110, flexDirection: "row" }}
@@ -208,9 +203,6 @@ export default function Hiss({ navigation, item, route }) {
         </View>
       </View>
     );
-  } else {
-    return <Text>Loading....</Text>;
-  }
 }
 
 const styles = StyleSheet.create({

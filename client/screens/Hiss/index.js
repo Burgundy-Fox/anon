@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
@@ -9,25 +9,26 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { editHiss, createHiss, getAllHiss } from "../../store/actions/hisses";
 
 export default function Hiss({ navigation, route }) {
-  const baseUrl = "http://192.168.100.53:4000";
   const { access_token } = useSelector((state) => state.usersReducer);
   const [image, setImage] = useState(null);
   let [content, setContent] = useState("");
   let [initalContent, setInitContent] = useState("");
   const dispatch = useDispatch();
 
-  if (route.params && route.params.from === "MyAccount") {
-    const { hissId } = route.params;
-    axios({
-      method: "GET",
-      url: `${baseUrl}/hisses/${hissId}`,
-      headers: { access_token },
-    })
-      .then(({ data }) => {
-        setInitContent(data.content);
+  useEffect(() => {
+    if (route.params && route.params.from === "MyAccount") {
+      const { hissId } = route.params;
+      axios({
+        method: "GET",
+        url: `/hisses/${hissId}`,
+        headers: { access_token },
       })
-      .catch((err) => console.log(err));
-  }
+        .then(({ data }) => {
+          setInitContent(data.content);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [])
 
   async function postHiss(hissData) {
     try {
@@ -121,7 +122,6 @@ export default function Hiss({ navigation, route }) {
 
   return (
     <View style={{ marginTop: 19 }}>
-      {/* <Text> {content} </Text> */}
       <TextInput
         multiline
         numberOfLines={10}

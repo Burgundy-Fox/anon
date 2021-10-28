@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   View,
-  Text,
   FlatList,
-  Image,
   StyleSheet,
-  TouchableOpacity,
   ImageBackground,
 } from "react-native";
+import Loader from "../../components/Loader";
 
 import { getAllHiss } from "../../store/actions/hisses";
 import { getUserDetails } from "../../store/actions/user";
@@ -21,14 +19,11 @@ export default function Home({ navigation, route }) {
   const dispatch = useDispatch();
 
   async function initialStore() {
-    console.log("initalizing redux");
     try {
       let token = await AsyncStorage.getItem("@access_token");
       dispatch({ type: "SET_ACCESS_TOKEN", payload: token });
       dispatch(getAllHiss(token));
       dispatch(getUserDetails(token));
-      // let username = await AsyncStorage.getItem('@Username')
-      // dispatch({ type: "SET_USERNAME", payload: username });
     } catch (error) {
       console.log(error);
     }
@@ -40,18 +35,12 @@ export default function Home({ navigation, route }) {
 
   if (!dataHiss.length) {
     return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
+        <Loader/>
     );
   }
 
   return (
     <View style={styles.container}>
-      {/* <Image
-        style={styles.img}
-        source={require("../../assets/chameleon.png")}
-      /> */}
       <ImageBackground
         source={require("../../assets/chameleon-pattern3.png")}
         resizeMode="cover"

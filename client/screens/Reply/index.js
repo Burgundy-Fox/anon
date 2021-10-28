@@ -10,8 +10,6 @@ export default function Reply({ navigation, route }) {
   const dispatch = useDispatch();
 
   function handleHiss() {
-    // console.log(reply)
-    // console.log(text)
     const formData = new FormData();
     formData.append("content", reply);
 
@@ -24,24 +22,6 @@ export default function Reply({ navigation, route }) {
         console.log(err);
       });
   }
-
-  // async function postHiss(hissData) {
-  //     try {
-  //         let token = await AsyncStorage.getItem('@access_token')
-  //         return dispatch(createHiss(hissData, token))
-  //             .then(({ data }) => {
-  //                 dispatch(getAllHiss(token))
-  //                 return true
-  //             })
-  //             .catch((err) => {
-  //                 console.log(err)
-  //                 return false
-  //             })
-  //     } catch (error) {
-  //         console.log(error)
-  //         return false
-  //     }
-  // }
 
   return (
     <View style={{ marginTop: 19 }}>

@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
+import Loader from "../../components/Loader";
 
 import { getAllHiss } from "../../store/actions/hisses";
 import { getUserDetails } from "../../store/actions/user";
@@ -31,55 +32,25 @@ export default function Mention({ navigation, route }) {
       return false;
     }
   }
-  const dispatch = useDispatch();
 
-<<<<<<< HEAD
-    useEffect(() => {
-        getUserId()
-        .then((UserId) => {
-          // console.log(UserId, 'ini userId')
-            if (UserId) {
-                const filteredDataHiss = dataHiss.filter((el) =>
-                    el.content.includes(`@Anon${UserId}`)
-                )
-                console.log(dataHiss)
-                // console.log(filteredDataHiss)
-                setMentions(filteredDataHiss)
-            } else {
-            }
-        })
-    }, [dataHiss])
-
-    if (!dataHiss.length) {
-        return (
-            <View>
-                <Text>Loading...</Text>
-            </View>
-        )
-    }
-=======
   useEffect(() => {
-    getUserId().then((UserId) => {
-      // console.log(UserId, 'ini userId')
-      if (UserId) {
-        const filteredDataHiss = dataHiss.filter((el) =>
-          el.content.includes(`@Anon${UserId}`)
-        );
-        // console.log(dataHiss)
-        // console.log(filteredDataHiss)
-        setMentions(filteredDataHiss);
-      } else {
-      }
-    });
-  }, [dataHiss]);
->>>>>>> 5bfd438839886378f97a8d4fbba7c14eb668f04d
+    getUserId()
+      .then((UserId) => {
+        // console.log(UserId, 'ini userId')
+        if (UserId) {
+          const filteredDataHiss = dataHiss.filter((el) =>
+            el.content.includes(`@Anon${UserId}`)
+          )
+          // console.log(filteredDataHiss)
+          setMentions(filteredDataHiss)
+        }
+      })
+  }, [dataHiss])
 
   if (!dataHiss.length) {
     return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
+      <Loader />
+    )
   }
 
   return (
